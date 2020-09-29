@@ -44,8 +44,11 @@ INSTALLED_APPS = [
     'apps.orgs.apps.OrgsConfig',
     'apps.users.apps.UsersConfig',
     # 'extra_apps.xadmin' # or 'xadmin'
+    'xadmin',
+    'crispy_forms',
 ]
 AUTH_USER_MODEL = 'users.UserProfile'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,15 +95,15 @@ DATABASES = {
     'remote_mysql': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'online_education',
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
+        'USER': 'Erics',
+        'PASSWORD': 'Erics123456!',
+        'HOST': '47.102.145.225',
         'PORT': '3306',
     },
-    'sqlite3': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'sqlite3': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
 }
 
 # Password validation
@@ -147,4 +150,4 @@ STATICFILES_DIR = [
 MEDIA_DIR = '/static/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
-DATABASE_ROUTERS = ['mysql_router.Router']
+# DATABASE_ROUTERS = ['mysql_router.Router']
