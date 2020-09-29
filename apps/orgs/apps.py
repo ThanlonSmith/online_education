@@ -8,3 +8,4 @@ class OrgsConfig(AppConfig):
     并且不需要把apps下的app模块(courses等)设置Sources Root
     """
     name = 'apps.orgs'
+    verbose_name = '机构管理'
