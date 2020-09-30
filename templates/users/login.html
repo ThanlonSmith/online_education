@@ -40,7 +40,10 @@
                                     <span class="glyphicon glyphicon-lock"></span>
                                     验证码
                                 </label>
-                                {#{{ user_register_form.captcha }}#}
+                                <div>
+                                    {{ user_login_form.captcha }}
+                                    <div style="color: red;font-weight: bold">{{ user_login_form.errors.captcha }}</div>
+                                </div>
                             </div>
                             <div class="col-md-12">
                                 {% csrf_token %}

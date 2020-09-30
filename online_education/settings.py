@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # 'extra_apps.xadmin' # or 'xadmin'
     'xadmin',
     'crispy_forms',
+    'captcha'
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'

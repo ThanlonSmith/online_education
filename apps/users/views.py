@@ -14,7 +14,11 @@ def index(request):
 # 用户注册功能模块
 def register(request):
     if request.method == "GET":
-        return render(request, 'users/register.html')
+        # 这里使用UserRegisterForm不是为了验证，而是为了使用验证码
+        user_register_form = UserRegisterForm()
+        return render(request, 'users/register.html', {
+            'user_register_form': user_register_form
+        })
     else:
         user_register_form = UserRegisterForm(request.POST)
         if user_register_form.is_valid():
@@ -43,7 +47,12 @@ def register(request):
 
 # 用户登录功能模块
 def user_login(request):
-    if request.method == "POST":
+    if request.method == 'GET':
+        user_login_form = UserLoginForm()
+        return render(request, 'users/login.html', {
+            'user_login_form': user_login_form
+        })
+    else:
         user_login_form = UserLoginForm(request.POST)
         if user_login_form.is_valid():
             email = user_login_form.cleaned_data['email']
@@ -52,7 +61,7 @@ def user_login(request):
             if user:
                 # return redirect('index')
                 # 可以加参数
-                login(request,user)
+                login(request, user)
                 return redirect(reverse('index'))
             return render(request, 'users/login.html', {
                 'msg': '用户名或密码不正确！'
@@ -60,7 +69,6 @@ def user_login(request):
         return render(request, 'users/login.html', {
             'user_login_form': user_login_form
         })
-    return render(request, 'users/login.html')
 
 
 # 用户退出功能模块

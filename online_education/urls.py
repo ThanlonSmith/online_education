@@ -25,5 +25,6 @@ urlpatterns = [
     path('courses/', include(('apps.courses.urls', 'course'), namespace='courses')),
     path('orgs/', include(('apps.orgs.urls', 'orgs'), namespace='orgs')),
     path('operations/', include(('operations.urls', 'operations'), namespace='operations')),
-    path('', index, name='index')
+    path('', index, name='index'),
+    path('captcha/', include('captcha.urls'))
 ]
