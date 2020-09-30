@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm, UserForgetPwdForm, UserResetForm
 from .models import UserProfile, EmailVerifyCode
 from django.db.models import Q
 from django.utils.safestring import mark_safe
@@ -97,3 +97,68 @@ def user_activate(request, code):
                 user.is_start = True
                 user.save()
                 return redirect(reverse('users:login'))
+
+
+# 向用户发送用于重置密码的邮箱验证码
+def user_forget_pwd(request):
+    if request.method == 'GET':
+        user_forget_pwd_form = UserForgetPwdForm()
+        return render(request, 'users/forget-pwd.html', {
+            'user_forget_pwd_form': user_forget_pwd_form
+        })
+    else:
+        user_forget_pwd_form = UserForgetPwdForm(request.POST)
+        if user_forget_pwd_form.is_valid():
+            email = user_forget_pwd_form.cleaned_data['email']
+            user_list = UserProfile.objects.filter(email=email)
+            if user_list.exists():
+                send_email_code(email, 2)
+                return HttpResponse('请尽快去您的邮箱重置密码！')
+            else:
+                return render(request, 'users/forget-pwd.html', {
+                    'msg': '用户不存在！'
+                })
+        else:
+            return render(request, 'users/forget-pwd.html', {
+                'user_forget_pwd_form': user_forget_pwd_form
+            })
+
+
+def user_reset(request, code):
+    if code:
+        if request.method == 'GET':
+            return render(request, 'users/password-reset.html', {
+                'code': code
+            })
+        else:
+            user_reset_form = UserResetForm(request.POST)
+            if user_reset_form.is_valid():
+                password = user_reset_form.cleaned_data['password']
+                password2 = user_reset_form.cleaned_data['password2']
+                if password == password2:
+                    code_obj_list = EmailVerifyCode.objects.filter(
+                        code=code)  # <QuerySet [<EmailVerifyCode: VmUIe9CS>]>
+                    if code_obj_list.exists():
+                        email = code_obj_list.first().email
+                        user_obj_list = UserProfile.objects.filter(email=email)
+                        if user_obj_list.exists():
+                            current_user = user_obj_list.first()
+                            print(current_user)
+                            current_user.set_password(password)
+                            current_user.save()
+                            return redirect(reverse('users:login'))
+                        else:
+                            pass
+                    else:
+                        pass
+                else:
+                    return render(request, 'users/password-reset.html', {
+                        'msg': '两次密码不一致！',
+                        'code': code
+                    })
+            else:
+                return render(request, 'users/password-reset.html', {
+                    'user_reset_form': user_reset_form,
+                    'code': code
+                })
+    pass

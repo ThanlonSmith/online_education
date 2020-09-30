@@ -29,15 +29,15 @@ def send_email_code(email, send_type):
     send_body = ''
     if send_type == 1:
         send_title = '欢迎注册D5在线教育网'
-        send_body = '请点击以下链接进行激活您的账号：\n http://127.0.0.1:8001/users/pwd/active/' + code
+        send_body = '请点击以下链接进行激活您的账号：\n http://127.0.0.1:8001/users/activate/' + code
         send_mail(send_title, send_body, EMAIL_FROM, [email])
 
     if send_type == 2:
-        send_title = 'D5在线教育网重置密码系统：'
-        send_body = '请点击以下链接进行重置您的密码：\n http://127.0.0.1:8001/users/pwd/reset/' + code
+        send_title = 'D5在线教育网重置密码'
+        send_body = '请点击以下链接进行重置您的密码：\n http://127.0.0.1:8001/users/reset/' + code
         send_mail(send_title, send_body, EMAIL_FROM, [email])
 
     if send_type == 3:
-        send_title = 'D5在线教育网修改邮箱验证码：'
+        send_title = 'D5在线教育网修改邮箱验证码'
         send_body = '您的验证码是：' + code
         send_mail(send_title, send_body, EMAIL_FROM, [email])
