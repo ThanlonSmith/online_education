@@ -17,7 +17,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 # 将我们自己定的包加入到Python搜索环境变量中
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
+# sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
 ]
+
 AUTH_USER_MODEL = 'users.UserProfile'
 
 MIDDLEWARE = [
@@ -73,7 +75,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',  # 要使用{{MEDIA_URL}}这句得加上
+
             ],
+            # 下面的配置可以让我们在视图中不需要写{% load static %}
+            'builtins': [
+                'django.templatetags.static',
+            ]
         },
     },
 ]
@@ -151,11 +159,11 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIR = [
-    os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'  # 引用名
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')  # 实际名 ,即实际文件夹的名字
 ]
-MEDIA_DIR = '/static/media/'
+MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
 # DATABASE_ROUTERS = ['mysql_router.Router']

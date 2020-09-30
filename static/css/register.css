@@ -1,0 +1,15 @@
+.panel-primary {
+    border-color: brown;
+}
+
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: brown;
+    border-color: white;
+}
+
+#submit {
+    color: #fff;
+    background-color: brown;
+    border-color: white;
+}

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from datetime import datetime
 
 
+# 用户不需要注册
 # Create your models here.
 class UserProfile(AbstractUser):
     image = models.ImageField(upload_to='user/', max_length=200, verbose_name='用户头像', null=True, blank=True)
@@ -10,7 +11,7 @@ class UserProfile(AbstractUser):
     birthday = models.DateTimeField(verbose_name='用户出生日期', null=True, blank=True)
     gender = models.CharField(choices=(('girl', '女'), ('boy', '男')), max_length=10, verbose_name='用户性别', default='girl')
     address = models.CharField(max_length=200, verbose_name='用户地址')
-    phone = models.CharField(max_length=200, verbose_name='用户地址')
+    phone = models.CharField(max_length=200, verbose_name='用户手机号')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     def __str__(self):

@@ -3,23 +3,22 @@ from .models import BannerInfo, EmailVerifyCode
 from xadmin import views
 
 
-# 配置xadmin主题时，注册的时候要用专用的view去注册
+# 配置xadmin主题时，注册的时候要用专用的view去注册，写在任何一个app中都可以
 class BaseXadminSetting:
-    enable_themes = True
-    use_bootswatch = True
+    enable_themes = True  # 保证主题可用
+    use_bootswatch = True  # 使用xadmin中自带的主题
 
 
-class CommXadminSetting:
+class CommXadminSetting(object):
     site_title = '在线教育后台管理系统'
     site_footer = 'pythoneers.cn'
-    menu_style = 'accordion'
+    # menu_style = 'accordion'
 
 
 class BannerInfoXadmin(object):
-    list_display = ['image', 'url', 'add_time']
-    # 设置过滤规则
-    search_fields = ['image', 'url']
-    list_filter = ['image', 'url']
+    list_display = ['image', 'url', 'add_time']  # 显示的字段
+    search_fields = ['image', 'url']  # 过滤器
+    list_filter = ['image', 'url']  # 搜索框
 
 
 class EmailVerifyCodeXadmin(object):

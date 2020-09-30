@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    D5在线教育网用户注册
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="row" style="margin-top: 8px">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-plus"></span>&nbsp;用户注册</h3>
+                </div>
+                <div class="panel-body">
+                    <p style="color:red;font-weight: bold">{{ msg }}</p>
+                    {#                    {% for key,err in user_register_form.errors.items %}#}
+                    {#                        {{ err }}#}
+                    {#                    {% endfor %}#}
+                    <form role="form" method="post" novalidate action="{% url 'users:register' %}">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="input_email"><span
+                                        class="glyphicon glyphicon-envelope"></span>
+                                    邮箱
+                                </label>
+                                <input autocomplete="on" name="email" class="form-control" type="email"
+                                       placeholder="请输入您的邮箱地址">
+                                <div style="color: red;font-weight: bold">{{ user_register_form.errors.email }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_password">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                    密码
+                                </label>
+                                <input autocomplete="on" name="password" class="form-control" type="password"
+                                       placeholder="请输入6-20位非中文字符密码">
+                                <div style="color: red;font-weight: bold">{{ user_register_form.errors.password }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="input_repassword">
+                                    <span class="glyphicon glyphicon-lock"></span>
+                                    验证码
+                                </label>
+                                {#{{ user_register_form.captcha }}#}
+                            </div>
+                            <div class="col-md-12">
+                                {% csrf_token %}
+                                <input id="submit" class="form-control btn btn-block" type="submit" value="注册">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-register').css({'color': '#a52a2a'})
+    </script>
+{% endblock %}
