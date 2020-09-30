@@ -38,6 +38,6 @@ def send_email_code(email, send_type):
         send_mail(send_title, send_body, EMAIL_FROM, [email])
 
     if send_type == 3:
-        send_title = '谷粒教育修改邮箱验证码：'
+        send_title = 'D5在线教育网修改邮箱验证码：'
         send_body = '您的验证码是：' + code
         send_mail(send_title, send_body, EMAIL_FROM, [email])
