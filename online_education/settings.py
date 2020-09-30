@@ -168,3 +168,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
 # DATABASE_ROUTERS = ['mysql_router.Router']
+
+EMAIL_HOST = 'smtp.yeah.net'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'erics1996@yeah.net'
+EMAIL_HOST_PASSWORD = 'ICIWFENZLJGETKWP'
+EMAIL_FROM = 'erics1996@yeah.net'

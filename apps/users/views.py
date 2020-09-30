@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from .forms import UserRegisterForm, UserLoginForm
 from .models import UserProfile
 from django.db.models import Q
 from django.utils.safestring import mark_safe
 from django.contrib.auth import authenticate, logout, login
+from tools.send_email_tool import send_email_code
 
 
 # Create your views here.
@@ -38,7 +39,9 @@ def register(request):
                 user.set_password(password)
                 user.email = email
                 user.save()
-                return redirect('index')
+                send_email_code(email, 1)
+                return HttpResponse('请尽快前往您的邮箱激活，否则无法登录！')
+                # return redirect('index')
         else:
             return render(request, 'users/register.html', {
                 'user_register_form': user_register_form
@@ -59,10 +62,13 @@ def user_login(request):
             password = user_login_form.cleaned_data['password']
             user = authenticate(username=email, password=password)
             if user:
-                # return redirect('index')
-                # 可以加参数
-                login(request, user)
-                return redirect(reverse('index'))
+                if user.is_start:
+                    # return redirect('index')
+                    # 可以加参数
+                    login(request, user)
+                    return redirect(reverse('index'))
+                else:
+                    return HttpResponse('请到邮箱中激活用户，否则无法登录系统！')
             return render(request, 'users/login.html', {
                 'msg': '用户名或密码不正确！'
             })
