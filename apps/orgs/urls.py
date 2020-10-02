@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import org_list
 
 urlpatterns = [
-
+    path('list/', org_list, name='org_list')
 ]

@@ -10,8 +10,8 @@ class BaseXadminSetting:
 
 
 class CommXadminSetting(object):
-    site_title = '在线教育后台管理系统'
-    site_footer = 'pythoneers.cn'
+    site_title = 'D5在线教育网后台管理系统'
+    site_footer = 'edu.pythoneers.cn'
     # menu_style = 'accordion'
 
 

@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% block title %}
+    课程机构列表 - D5在线教育网
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="/static/css/orgs-list.css">
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <!--start路径导航-->
+        <ol class="breadcrumb" style="margin:8px 0">
+            <li><a href="{% url 'index' %}">首页</a></li>
+            <li class="active">授课机构</li>
+        </ol>
+        <!--end路径导航-->
+        <div class="col-md-9" style="padding: 2px">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="movietags" style="margin-bottom: 0">
+                    <tbody>
+                    <tr>
+                        <td class="text-center">机构类别</td>
+                        <td>
+                            <a href="?category=&city_id={{ city_id }}&sort={{ sort }}"
+                               class="label label-default {% if not category %}label-success{% endif %}"
+                               id="org_all">
+                                <span class="glyphicon"></span>全部
+                            </a>
+                            &nbsp;
+                            <a href="?category=pxjg&city_id={{ city_id }}&sort={{ sort }}"
+                               class="label label-default {% if category == 'pxjg' %}label-success{% endif %}  "
+                               id="org_pxjg">
+                                培训机构&nbsp;
+                            </a>
+                            &nbsp;
+                            <a href="?category=gx&city_id={{ city_id }}&sort={{ sort }}"
+                               class="label label-default {% if category == 'gx' %}label-success{% endif %}"
+                               id="org_gx">
+                                高校
+                            </a>
+                            &nbsp;
+                            <a href="?category=individual&city_id={{ city_id }}&sort={{ sort }}"
+                               class="label label-default {% if category == 'individual' %}label-success{% endif %}"
+                               id="org_individual">
+                                个人
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">所在地区</td>
+                        <td>
+                            <a href="?category={{ category }}&city_id=&sort={{ sort }}"
+                               class="label label-default {% if city_id == '' %}label-danger{% endif %}">
+                                <span class="glyphicon"></span>全部
+                            </a>
+                            {% for city in all_citys %}
+                                &nbsp;
+                                <a href="?category={{ category }}&city_id={{ city.id }}&sort={{ sort }}"
+                                   class="label label-default {% if city.id|stringformat:'i' == city_id %}label-danger{% endif %} ">
+                                    <span class="glyphicon "></span>{{ city.name }}
+                                </a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="" style="padding-right: 10px;padding-top: 10px">
+                <span class="pull-right">共{{ sum_count }}家</span>
+            </div>
+            {#{{ sum_count.count }}#}
+            <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;margin-top: 5px">
+                <ul style="padding-left: 0;">
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration:none;height: 50px;display: inline-block"
+                            href="?category={{ category }}&city_id={{ city_id }}&sort=">全部</a>
+                    </li>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
+                            href="?category={{ category }}&city_id={{ city_id }}&sort=study_num">学习人数<span
+                            class="glyphicon glyphicon-arrow-down"></span></a>
+                    </li>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
+                            href="?category={{ category }}&city_id={{ city_id }}&sort=course_num">课程数<span
+                            class="glyphicon glyphicon-arrow-down"></span></a>
+                    </li>
+                    <li style="clear: both;list-style: none;"></li>
+                </ul>
+            </div>
+            {#{% for org in pages.object_list %}#}
+            {% for org in pages %}
+                <div class="panel panel-default" style="margin-bottom: 8px">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img width="100px" height="80px" class="media-object" data-src=""
+                                         alt="64x64"
+                                         data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ org.image }}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="" style="text-decoration:none;color: #333333">
+                                    <h4 class="media-heading">{{ org.name }}
+                                        <img width="23" height="29" src="/static/media/org/authentication.png"
+                                             data-src="holder.js/10x10">
+                                        <img width="23" height="29" src="/static/media/org/gold.png"
+                                             data-src="holder.js/10x10">
+                                    </h4>
+                                </a>
+                                <ul style="color: #848484;font-size: 12px;">
+                                    <li style="margin-top: 3px">
+                                        <span>课程数：<span>{{ org.course_num }}</span></span>&nbsp;&nbsp;
+                                        <span>学习人数：<span>{{ org.study_num }}</span></span>
+                                    </li>
+                                    <li style="margin-top: 3px"><span
+                                            class="glyphicon glyphicon-map-marker"></span>{{ org.address }}</li>
+                                    <li style="margin-top: 3px"><span class="glyphicon glyphicon-leaf"></span>经典课程：
+                                        {% for course in org.courseinfo_set.all|slice:":2" %}
+                                            <a href="">{{ course.name }}</a>
+                                        {% endfor %}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="media-right">
+                                <a href="#">
+                                    <img style="margin-top: 10px" class="media-object img-circle" src=""
+                                         data-src="holder.js/80x80" alt="...">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <nav aria-label="Page navigation" class="text-center">
+                <ul class="pagination">
+                    <li>
+                        <a href="?page_num=1&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">首页</span>
+                        </a>
+                    </li>
+                    {% if pages.has_previous %}
+                        <li>
+                            <a href="?page_num={{ pages.previous_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled">
+                            <a href="javascript:" aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for num in pages.paginator.page_range %}
+                        {% if pages.number == num %}
+                            <li class="active"><a
+                                    href="?page_num={{ num }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">{{ num }}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page_num={{ num }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pages.has_next %}
+                        <li>
+                            <a href="?page_num={{ pages.next_page_number }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}"
+                               aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled">
+                            <a href="javascript:" aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="?page_num={{ sum_page_num }}&category={{ category }}&city_id={{ city_id }}&sort={{ sort }}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">尾页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-3" style="padding: 2px;">
+            <div class="panel panel-default" style="margin-bottom: 8px;">
+                <div class="panel-heading" style="background-color: #5cb85c;color: white">
+                    <h3 class="panel-title text-center">我要学习</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="姓名">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="联系方式">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="课程名">
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-block">立即咨询</button>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-heading">
+                    <h3 class="panel-title">授课机构排名</h3>
+                </div>
+                <div class="panel-body">
+                    {% for org in ranking_orgs %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    {#                                    <img class="media-object" src="" alt="..." data-src="holder.js/60x60">#}
+                                    <div class="num">{{ forloop.counter }}</div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading">{{ org.name }}</h5>
+                                <span style="font-size: 12px;color:#848484;"><span
+                                        class="glyphicon glyphicon-map-marker"
+                                        style="margin-right: 0 !important;"></span>{{ org.city_info.name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <!--版权-->
+    <!-- <div class="col-md-12  text-center wow animate__animated animate__backInDown animate__delay-2s"-->
+    <div class="col-md-12  text-center wow animate__animated animate__fadeIn"
+         style="padding: 25px 0 25px;background: brown;margin-top: 8px">
+        <p style="margin: 0">
+            <a href="" style="color:white;font-weight: bold">关于本站</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">免责申明</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">联系我们</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">本站蓝图</a>&nbsp;&nbsp;
+        </p>
+        <p style="margin: 0">
+            <span style="color: white;font-weight: bold">Copyright © 2020-2022&nbsp; edu.pythoneers.cn. All Rights Reserved.</span>
+        </p>
+        <p style="margin: 0">
+            <a target="_blank_" href="http://www.miit.gov.cn/"
+               style="color:white;font-weight: bold">豫ICP备19037971号</a>
+            <a target="_blank">
+                <img src="{% static "public/images/beian.png" %}" style="padding-bottom:6px">
+                <span style="color:white;font-weight: bold">豫公网安备 41152802000091号</span>
+            </a>
+            <!--<span>版本号:1.1.0.190402_alpha</span>-->
+            <span>
+             <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+             document.write(unescape("%3Cspan id='cnzz_stat_icon_1278138602'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1278138602%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            <span id="cnzz_stat_icon_1278138602"></span>
+            <script src="http://s4.cnzz.com/z_stat.php?id=1278138602&amp;show=pic" type="text/javascript"></script>
+            <script src="http://c.cnzz.com/core.php?web_id=1278138602&amp;show=pic&amp;t=z" charset="utf-8"
+                    type="text/javascript">
+            </script>
+    </span>
+        </p>
+    </div>
+    <!--/版权-->
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-orgs').css({'color': '#a52a2a'})
+    </script>
+{% endblock %}

@@ -1,0 +1,8 @@
+.num {
+    background: url(/static/media/org/medal.png) no-repeat center center;
+    width: 23px;
+    height: 29px;
+    color: #fffc00;
+    text-align: center;
+    margin-top: 8px;
+}
