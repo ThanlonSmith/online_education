@@ -194,17 +194,18 @@
                     <h3 class="panel-title text-center">我要学习</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="" method="post">
+                    <form>
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="姓名">
+                            <input autocomplete="off" id="name" class="form-control" type="text" placeholder="姓名">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="联系方式">
+                            <input autocomplete="off" id="phone" class="form-control" type="text" placeholder="联系方式">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="课程名">
+                            <input autocomplete="off" id="course" class="form-control" type="text" placeholder="课程名">
                         </div>
-                        <button type="submit" class="btn btn-danger btn-block">立即咨询</button>
+                        <p id="msg" style="color: red;font-weight: bold"></p>
+                        <button id="btn" type="submit" class="btn btn-danger btn-block">立即咨询</button>
                     </form>
                 </div>
             </div>
@@ -272,5 +273,44 @@
 {% block js %}
     <script>
         $('#nav-orgs').css({'color': '#a52a2a'})
+    </script>
+    <script>
+        $(function () {
+            $('#btn').click(function () {
+                let name = $('#name').val();
+                let phone = $('#phone').val();
+                let course = $('#course').val();
+                $.ajax({
+                    url: '{% url 'operations:user_ask' %}',
+                    type: 'post',
+                    data: {
+                        'name': name,
+                        'phone': phone,
+                        'course': course,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (callback) {
+                        //ret = {'status': 'ok', 'msg': '咨询成功！'}
+                        if (callback.status === 'ok') {
+                            //alert('咨询成功！');
+                            $('#msg').text(callback.msg)
+                            $('#msg').css('color', 'green')
+                            $('#name').val('');
+                            $('#phone').val('');
+                            $('#course').val('');
+                        } else {
+                            //alert('咨询失败！');
+                            $('#msg').css('color', 'red')
+                            $('#msg').text(callback.msg);
+                        }
+                        setTimeout(function () {
+                            $('#msg').text('')
+                        }, 1000)
+                    }
+                })
+                {#阻止submit#}
+                return false;
+            })
+        })
     </script>
 {% endblock %}
