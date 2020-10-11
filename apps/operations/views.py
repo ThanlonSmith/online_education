@@ -17,5 +17,5 @@ def user_ask(request):
             return JsonResponse(ret)
         else:
             ret['status'] = 'fail'
-            ret['msg'] = '咨询失败！'
+            ret['msg'] = '咨询失败，请检查您输入的内容！'
             return JsonResponse(ret)

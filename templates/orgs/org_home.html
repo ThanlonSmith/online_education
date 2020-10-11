@@ -1,0 +1,78 @@
+{% extends 'orgs/org_base.html' %}
+{% block title %}{{ curr_org.name }}{% endblock %}
+{% block right %}
+    <div class="panel panel-default" style="margin-bottom: 8px">
+        <div class="panel-heading">
+            机构课程
+            <span style="float: right"><a href="{% url 'orgs:org_course' curr_org.id %}"
+                                          style="color: #717171;text-decoration: none">查看更多  >  </a></span>
+        </div>
+        <div class="panel-body">
+            {% for course in curr_org_courses %}
+                <div style="padding-left:2px;padding-right:2px" class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <a href="">
+                            <img data-src="holder.js/100%x150" alt="100%x150"
+                                 src="/static{{ MEDIA_URL }}{{ course.image }}">
+                        </a>
+                        <div class="caption" style="padding-bottom: 0">
+                            <h5 style="font-weight: bold">{{ course.name }}</h5>
+                            <p style="font-size: 12px;color: #9f9f9f">
+                                <span style="float: left">课时：<span style="color: #fb8341">{{ course.study_time }}</span></span>
+                                <span style="float: right">参加人数：<span
+                                        style="color: #fb8341">{{ course.study_num }}</span></span>
+                            <div style="clear: both"></div>
+                            </p>
+                            <p style="font-size: 12px;color: #9f9f9f;">
+                                <span class="pull-left text-center"
+                                      style="background-color: #f0f0f0;line-height: 30px;width: 70%;">
+                                    {{ curr_org.name }}
+                                </span>
+                                <span class="pull-right text-center"
+                                      style="background-color: #f0f0f0;line-height: 30px;width: 29%"><span
+                                        class="glyphicon glyphicon-star"></span>{{ course.love_num }}</span>
+                            <div style="clear:both;"></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            机构讲师
+            <span style="float: right">
+                <a href="{% url 'orgs:org_teacher' curr_org.id %}"
+                   style="color: #717171;text-decoration: none">查看更多  >  </a></span>
+        </div>
+        <div class="panel-body" style="padding-bottom: 0">
+            {% for teacher in curr_org_teachers %}
+                <div class="media">
+                    <div class="media-left">
+                        <a href="">
+                            <img width="60px" class="media-object img-circle" data-src="" alt="64x64"
+                                 data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ teacher.image }}">
+                        </a>
+                        <div style="margin-top: 3px" class="text-center">{{ teacher }}</div>
+                    </div>
+                    <div class="media-body">
+                        <a href="" style="text-decoration:none;color: #333333">
+                            <h4 class="media-heading">{{ teacher.courseinfo_set.all.0 }}</h4>
+                            {#                            <h4 class="media-heading">{{ teacher.courseinfo_set.all.first }}</h4>#}
+                        </a>
+                        <ul style="font-size: 12px;">
+                            <li style="margin-top: 8px;color: #848484;">
+                                发表于：{{ teacher.courseinfo_set.all.0.add_time }}
+                            </li>
+                            <li style="margin-top: 8px">
+                                课程介绍：{{ teacher.courseinfo_set.all.0.desc }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

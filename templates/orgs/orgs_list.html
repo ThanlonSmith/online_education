@@ -14,7 +14,7 @@
         </ol>
         <!--end路径导航-->
         <div class="col-md-9" style="padding: 2px">
-            <div class="table-responsive">
+            <div class="table-responsive" style="margin-bottom: 0">
                 <table class="table table-bordered" id="movietags" style="margin-bottom: 0">
                     <tbody>
                     <tr>
@@ -64,11 +64,13 @@
                     </tbody>
                 </table>
             </div>
-            <div class="" style="padding-right: 10px;padding-top: 10px">
-                <span class="pull-right">共{{ sum_count }}家</span>
+            <div class="" style="padding-right: 10px;padding-top: 0;margin-top: 2px">
+                <span class="pull-right" style="">共{{ sum_count }}家</span>
+                <div style="clear: both"></div>
             </div>
+
             {#{{ sum_count.count }}#}
-            <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;margin-top: 5px">
+            <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;margin-top: 2px">
                 <ul style="padding-left: 0;">
                     <li style="float: left;list-style-type: none;margin: 0 16px;"><a
                             style="color: #333;text-decoration:none;height: 50px;display: inline-block"
@@ -93,14 +95,15 @@
                     <div class="panel-body">
                         <div class="media">
                             <div class="media-left">
-                                <a href="#">
+                                <a href="{% url 'orgs:org_home' org.id %}">
                                     <img width="100px" height="80px" class="media-object" data-src=""
                                          alt="64x64"
                                          data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ org.image }}">
                                 </a>
                             </div>
                             <div class="media-body">
-                                <a href="" style="text-decoration:none;color: #333333">
+                                <a href="{% url 'orgs:org_home' org.id %}"
+                                   style="text-decoration:none;color: #333333">
                                     <h4 class="media-heading">{{ org.name }}
                                         <img width="23" height="29" src="/static/media/org/authentication.png"
                                              data-src="holder.js/10x10">
@@ -217,7 +220,7 @@
                     {% for org in ranking_orgs %}
                         <div class="media">
                             <div class="media-left">
-                                <a href="#">
+                                <a href="{% url 'orgs:org_home' org.id %}">
                                     {#                                    <img class="media-object" src="" alt="..." data-src="holder.js/60x60">#}
                                     <div class="num">{{ forloop.counter }}</div>
                                 </a>
@@ -305,7 +308,7 @@
                         }
                         setTimeout(function () {
                             $('#msg').text('')
-                        }, 1000)
+                        }, 2000)
                     }
                 })
                 {#阻止submit#}

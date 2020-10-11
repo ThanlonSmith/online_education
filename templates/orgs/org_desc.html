@@ -1,0 +1,10 @@
+{% extends 'orgs/org_base.html' %}
+{% block title %}{{ curr_org.name }}{% endblock %}
+{% block right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">机构介绍</div>
+        <div class="panel-body">
+            {{ curr_org.detail }}
+        </div>
+    </div>
+{% endblock %}

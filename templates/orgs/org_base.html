@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block css %}
+    <style>
+        #collect {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            color: #fff;
+            text-align: center;
+            background: #5cb85c url(/static{{ MEDIA_URL }}org/star-btn.png) no-repeat 15px center;
+            text-indent: 15px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+            background-color: brown;
+            border: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
+            <div class="media">
+                <div class="media-left">
+                    <div style="height: 30px;line-height: 30px">
+                        <span class="glyphicon glyphicon-volume-up"></span>
+                    </div>
+                </div>
+                <div class="media-body"></div>
+                <div class="media-right">
+                    <div id="collect">收藏</div>
+                </div>
+            </div>
+            <ol class="breadcrumb" style="margin:8px 0">
+                <li><a href="{% url 'orgs:org_list' %}">授课机构</a></li>
+                <li class="active">{{ curr_org.name }}</li>
+            </ol>
+        </div>
+        <div class="col-md-3" style="padding-left: 2px;padding-right: 2px">
+            <div class="list-group">
+                <a href="{% url 'orgs:org_home' curr_org.id %}"
+                   class="list-group-item {% if menu_title == 'org_home' %}active{% endif %}">
+                    &nbsp;机构首页
+                </a>
+                <a href="{% url 'orgs:org_course' curr_org.id %}"
+                   class="list-group-item {% if menu_title == 'org_course' %}active{% endif %}">
+                    &nbsp;机构课程
+                </a>
+                <a href="{% url 'orgs:org_desc' curr_org.id %}"
+                   class="list-group-item {% if menu_title == 'org_desc' %}active{% endif %}">
+                    &nbsp;机构介绍
+                </a>
+                <a href="{% url 'orgs:org_teacher' curr_org.id %}"
+                   class="list-group-item {% if menu_title == 'org_teacher' %}active{% endif %}">
+                    &nbsp;机构讲师
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9" style="padding-left: 2px;padding-right: 2px">
+            {% block right %}{% endblock %}
+        </div>
+    </div>
+    {% block orgs_detail %}
+    {% endblock %}
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-orgs').css({'color': '#a52a2a'})
+    </script>
+{% endblock %}

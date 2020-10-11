@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 # Create your views here.
+# 机构列表
 def org_list(request):
     all_orgs = OrgInfo.objects.all()
     """
@@ -36,7 +37,7 @@ def org_list(request):
     分页
     """
     # 创建分页对象，指定每页显示的数据条数
-    per_page_num = 4
+    per_page_num = 6
     # 创建分页对象
     paginator = Paginator(all_orgs, per_page_num)
     try:
@@ -59,4 +60,75 @@ def org_list(request):
         'category': category,
         'city_id': city_id,
         'sort': sort
+    })
+
+
+# 机构首页
+def org_home(request, org_id):
+    print(type(org_id))  # <class 'str'>
+    # curr_org = OrgInfo.objects.filter(id=org_id).first()
+    curr_org = OrgInfo.objects.filter(id=org_id)[0]
+    # 当前机构的课程，维护数据
+    curr_org_courses = curr_org.courseinfo_set.all()[:2]
+    curr_org_teachers = curr_org.teacherinfo_set.all()[:1]
+    return render(request, 'orgs/org_home.html', {
+        'curr_org': curr_org,
+        'menu_title': 'org_home',
+        'curr_org_courses': curr_org_courses,
+        'curr_org_teachers': curr_org_teachers
+    })
+
+
+# 机构课程
+def org_course(request, org_id):
+    curr_org = OrgInfo.objects.filter(id=org_id).first()
+    # 当前机构的所有课程
+    curr_org_courses = curr_org.courseinfo_set.all()
+    # 分页功能
+    page_num = request.GET.get('page_num', '')
+    paginator = Paginator(curr_org_courses, 2)
+    # 获取总的页码数
+    num_pages = paginator.num_pages
+    try:
+        pages = paginator.page(page_num)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        # paginator.num_pages：总页数
+        pages = paginator.page(num_pages)
+    return render(request, 'orgs/org_course.html', {
+        'curr_org': curr_org,
+        'menu_title': 'org_course',
+        'pages': pages,
+        'num_pages': num_pages
+    })
+
+
+# 机构介绍
+def org_desc(request, org_id):
+    curr_org = OrgInfo.objects.filter(id=org_id).first()
+    return render(request, 'orgs/org_desc.html', {
+        'curr_org': curr_org,
+        'menu_title': 'org_desc',
+    })
+
+
+# 机构讲师
+def org_teacher(request, org_id):
+    curr_org = OrgInfo.objects.filter(id=org_id).first()
+    curr_org_teachers = curr_org.teacherinfo_set.all()
+    page_num = request.GET.get('page_num', '')
+    paginator = Paginator(curr_org_teachers, 2)
+    num_pages = paginator.num_pages
+    try:
+        pages = paginator.page(page_num)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(num_pages)
+    return render(request, 'orgs/org_teacher.html', {
+        'curr_org': curr_org,
+        'menu_title': 'org_teacher',
+        'pages': pages,
+        'num_pages': num_pages
     })

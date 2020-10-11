@@ -15,10 +15,11 @@ class CourseInfo(models.Model):
     click_num = models.IntegerField(default=0, verbose_name="访问量")
     desc = models.CharField(max_length=200, verbose_name="课程简介")
     detail = models.TextField(verbose_name="课程详情")
-    category = models.CharField(choices=(('qd', '前端开发'), ('hd', '后端开发')), verbose_name="课程类别", max_length=5)
+    category = models.CharField(choices=(('qd', '前端开发'), ('hd', '后端开发'), ('db', '数据库'), ('algorithm', '算法')),
+                                verbose_name="课程类别", max_length=10)
     course_notice = models.CharField(max_length=200, verbose_name="课程公告")
     course_need = models.CharField(max_length=100, verbose_name="课程须知")
-    teacher_tell = models.CharField(max_length=100, verbose_name="老师教导")
+    teacher_tell = models.CharField(max_length=100, verbose_name="老师寄语")
     org_info = models.ForeignKey(OrgInfo, verbose_name="所属机构", on_delete=models.CASCADE)
     teacher_info = models.ForeignKey(TeacherInfo, verbose_name="所属讲师", on_delete=models.CASCADE)
     is_banner = models.BooleanField(default=False, verbose_name="是否轮播")

@@ -1,0 +1,90 @@
+{% extends 'orgs/org_base.html' %}
+{% block title %}{{ curr_org.name }}{% endblock %}
+{% block right %}
+    <div class="panel panel-default">
+        <div class="panel-heading">机构讲师</div>
+        <div class="panel-body">
+            {% for teacher in pages %}
+                <div class="media">
+                    <div class="media-left">
+                        <a href="">
+                            <img width="60px" class="media-object img-circle" data-src="" alt="64x64"
+                                 data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ teacher.image }}">
+                        </a>
+                        <div style="margin-top: 3px" class="text-center">{{ teacher }}</div>
+                    </div>
+                    <div class="media-body">
+                        <a href="" style="text-decoration:none;color: #333333">
+                            <h4 class="media-heading">{{ teacher.courseinfo_set.all.0 }}</h4>
+                            {#                            <h4 class="media-heading">{{ teacher.courseinfo_set.all.first }}</h4>#}
+                        </a>
+                        <ul style="font-size: 12px;">
+                            <li style="margin-top: 8px;color: #848484;">
+                                发表于：{{ teacher.courseinfo_set.all.0.add_time }}
+                            </li>
+                            <li style="margin-top: 8px">
+                                课程介绍：{{ teacher.courseinfo_set.all.0.desc }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr style="margin: 3px 0;">
+            {% endfor %}
+        </div>
+        <nav aria-label="Page navigation" class="text-center" style="padding-bottom: 10px">
+            <ul class="pagination">
+                <li>
+                    <a href="?page_num=1"
+                       aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
+                {% if pages.has_previous %}
+                    <li>
+                        <a href="?page_num={{ pages.previous_page_number }}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:" aria-label="Previous">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for num in pages.paginator.page_range %}
+                    {% if pages.number == num %}
+                        <li class="active"><a
+                                href="?page_num={{ num }}">{{ num }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="?page_num={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if pages.has_next %}
+                    <li>
+                        <a href="?page_num={{ pages.next_page_number }}"
+                           aria-label="Next">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:" aria-label="Next">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="?page_num={{ num_pages }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
