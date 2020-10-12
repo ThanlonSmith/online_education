@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}公开课{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
+            <ol class="breadcrumb" style="margin:8px 0">
+                <li><a href="{% url 'index' %}">首页</a></li>
+                <li class="active">公开课</li>
+            </ol>
+        </div>
+        <div class="col-md-9" style="padding:0 2px">
+            <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;border: 1px solid #ddd;">
+                <ul style="padding-left: 0;">
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration:none;height: 50px;display: inline-block"
+                            href="?sort=">最新</a>
+                    </li>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
+                            href="?sort=click_num">最热门</a>
+                    </li>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
+                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
+                            href="?sort=study_num">参与人数</a>
+                    </li>
+                    <li style="clear: both;list-style: none;"></li>
+                </ul>
+            </div>
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-body">
+                    {% for course in pages %}
+                        <div style="padding-left:2px;padding-right:2px" class="col-sm-6 col-md-3">
+                            <div class="thumbnail">
+                                <a href="">
+                                    <img data-src="holder.js/100%x150" alt="100%x150"
+                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
+                                </a>
+                                <div class="caption" style="padding-bottom: 0">
+                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                    <p style="font-size: 12px;color: #9f9f9f">
+                                        <span style="float: left">课时：<span
+                                                style="color: #fb8341">{{ course.study_time }}</span></span>
+                                        <span style="float: right">参加人数：<span
+                                                style="color: #fb8341">{{ course.study_num }}</span></span>
+                                    <div style="clear: both"></div>
+                                    </p>
+                                    <p style="font-size: 12px;color: #9f9f9f;">
+                                <span class="pull-left text-center"
+                                      style="background-color: #f0f0f0;line-height: 30px;width: 70%;">
+                                    {{ course.org_info.name }}
+                                </span>
+                                        <span class="pull-right text-center"
+                                              style="background-color: #f0f0f0;line-height: 30px;width: 29%"><span
+                                                class="glyphicon glyphicon-star"></span>{{ course.love_num }}</span>
+                                    <div style="clear:both;"></div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <nav aria-label="Page navigation" class="text-center" style="padding-bottom: 10px">
+                    <ul class="pagination">
+                        <li>
+                            <a href="?page_num=1"
+                               aria-label="Previous">
+                                <span aria-hidden="true">首页</span>
+                            </a>
+                        </li>
+                        {% if pages.has_previous %}
+                            <li>
+                                <a href="?page_num={{ pages.previous_page_number }}&sort={{ sort }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">上一页</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="javascript:" aria-label="Previous">
+                                    <span aria-hidden="true">上一页</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for num in pages.paginator.page_range %}
+                            {% if pages.number == num %}
+                                <li class="active"><a
+                                        href="?page_num={{ num }}&sort={{ sort }}">{{ num }}</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a href="?page_num={{ num }}&sort={{ sort }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if pages.has_next %}
+                            <li>
+                                <a href="?page_num={{ pages.next_page_number }}&sort={{ sort }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">下一页</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="disabled">
+                                <a href="javascript:" aria-label="Next">
+                                    <span aria-hidden="true">下一页</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href="?page_num={{ num_pages }}&sort={{ sort }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">尾页</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-md-3" style="padding:0 2px">
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-heading">
+                    <h3 class="panel-title">热门课程推荐</h3>
+                </div>
+                <div class="panel-body">
+                    {% for course in recommend_courses %}
+                        <div style="padding-left:2px;padding-right:2px" class="col-sm-12 col-md-12">
+                            <div class="thumbnail">
+                                <a href="">
+                                    <img data-src="holder.js/100%x150" alt="100%x150"
+                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
+                                </a>
+                                <div class="caption" style="padding-bottom: 0">
+                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                    <p style="font-size: 12px;color: #9f9f9f">
+                                        <span>
+                                            难度：
+                                            <span style="color: #fb8341">
+                                            {% if course.level == 'gj' %}
+                                                高级
+                                            {% elif course.level == 'zj' %}
+                                                中级
+                                            {% elif course.level == 'cj' %}
+                                                初级
+                                            {% endif %}
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-courses').css({'color': '#a52a2a'})
+    </script>
+{% endblock %}
