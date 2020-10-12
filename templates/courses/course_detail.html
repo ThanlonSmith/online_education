@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% block title %}{{ current_course.name }}-公开课-详情页面{% endblock %}
+{% block css %}
+    <style>
+        #level {
+            height: 50px;
+            line-height: 50px;
+            background-color: #f4f4f4;
+            color: #9f9f9f;
+        }
+
+        #collect_course_btn {
+            width: 49%;
+            color: white;
+            background-color: #717171;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        #start_study {
+            width: 49%;
+            color: white;
+            background-color: #ff7800;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        #collect_org_btn {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #ff7800;
+            border-radius: 2px;
+            color: #ff7800;
+            margin: 5px auto;
+            text-align: center;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <!--begin route nav-->
+        <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
+            <ol class="breadcrumb" style="margin:8px 0">
+                <li><a href="{% url 'index' %}">首页</a></li>
+                <li><a href="{% url 'courses:course_list' %}">公开课</a></li>
+                <li class="active">课程详情</li>
+            </ol>
+        </div>
+        <!--stop route nav-->
+        <!--begin content left-->
+        <div class="col-md-9" style="padding: 0 2px;">
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-body" style="padding: 8px">
+                    <div class="col-md-6" style="padding: 0 5px">
+                        <img width="100%" height="325" class="" src="/static{{ MEDIA_URL }}{{ current_course.image }}"
+                             alt="">
+                    </div>
+                    <div class="col-md-6" style="padding: 0 8px">
+                        <h4 title="{{ current_course.name }}">{{ current_course.name }}</h4>
+                        <p style="color: #fb8341;">{{ current_course.desc }}</p>
+                        <p id="level">
+                            <span style="float: left;padding-left: 10px;">
+                                难度：
+                                <span style="color: #fb8341;font-size: 18px;">
+                                    {% if current_course.level == 'gj' %}
+                                        高级
+                                    {% elif current_course.level == 'zj' %}
+                                        中级
+                                    {% elif current_course.level == 'cj' %}
+                                        初级
+                                    {% endif %}
+                                </span>
+                            </span>
+                            <span style="float: right;padding-right: 10px">
+                                    学习人数：{{ current_course.study_num }}
+                                </span>
+                        </p>
+                        <p style="font-size: 12px"><span
+                                style="color: #9f9f9f;">时长：</span>{{ current_course.study_time }} 分钟</p>
+                        <p style="font-size: 12px"><span
+                                style="color: #9f9f9f;">章节数：</span>{{ current_course.lessoninfo_set.count }} 章</p>
+                        <p style="font-size: 12px"><span style="color: #9f9f9f;">课程类别：</span>
+                            {% if current_course.category == 'qd' %}
+                                前端开发
+                            {% elif current_course.category == 'hd' %}
+                                后端开发
+                            {% elif current_course.category == 'db' %}
+                                数据库
+                            {% elif current_course.category == 'algorithm' %}
+                                算法
+                            {% endif %}
+                        </p>
+                        <p style="color: #9f9f9f;font-size: 12px">学习用户：</p>
+                        <p style="color: #9f9f9f;font-size: 12px">
+                                <span id="collect_course_btn" class="pull-left" style="cursor: pointer">
+                                 {% if course_love %}
+                                     取消收藏
+                                 {% else %}
+                                     收藏
+                                 {% endif %}
+                                </span>
+                            <a href=""><span id="start_study" class="pull-right">开始学习</span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">课程详情</div>
+                <div class="panel-body">
+                    {{ current_course.detail }}
+                </div>
+            </div>
+        </div>
+        <!--stop content left-->
+        <!--begin content right-->
+        <div class="col-md-3" style="padding: 0 2px">
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-heading">授课机构</div>
+                <div class="panel-body" style="padding: 8px">
+                    <div class="thumbnail" style="margin-bottom: 0">
+                        <a href="{% url 'orgs:org_home' current_course.org_info.id %}">
+                            <img class="img-responsive" data-src="holder.js/100%x150"
+                                 src="/static{{ MEDIA_URL }}{{ current_course.org_info.image }}" alt="课程所属机构图片">
+                        </a>
+                        <div class="caption" style="padding-bottom: 0">
+                            <h5 style="font-weight: bold"
+                                class="text-center">{{ current_course.org_info.name }}</h5>
+                            <a id="collect_org_btn">
+                                {% if org_love %}
+                                    取消收藏
+                                {% else %}
+                                    收藏
+                                {% endif %}
+                            </a>
+                            <div style="font-size: 12px;color: #9f9f9f;margin-bottom: 10px">
+                                        <span>
+                                            课程数：{{ current_course.org_info.courseinfo_set.count }}
+                                        </span>
+                            </div>
+                            <div style="font-size: 12px;color: #9f9f9f;margin-bottom: 5px">
+                                        <span>
+                                            教师数：{{ current_course.org_info.teacherinfo_set.count }}
+                                        </span>
+                            </div>
+                            <div style="font-size: 12px;color: #9f9f9f;margin-bottom: 5px">
+                                        <span>
+                                            所在地区：{{ current_course.org_info.city_info.name }}
+                                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">相关课程推荐</div>
+                <div class="panel-body" style="padding: 8px">
+                    {% for course in relate_course %}
+                            <div class="thumbnail" style="margin-bottom:0">
+                                <a href="{% url 'courses:course_detail' course.id %}">
+                                    <img data-src="holder.js/100%x150" alt="100%x150"
+                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
+                                </a>
+                                <div class="caption" style="padding-bottom: 0">
+                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                    <p style="font-size: 12px;color: #9f9f9f">
+                                        <span>
+                                            学习时长：
+                                            <span style="color: #fb8341">
+                                                {{ course.study_time }}
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!--stop content right-->
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-courses').css({'color': '#a52a2a'})
+        $('#collect_org_btn').click(function () {
+            let love_id = {{ current_course.org_info.id }};
+            let love_type = 1;
+            $.ajax({
+                url: '{% url 'operations:user_love' %}',
+                type: 'get',
+                data: {
+                    'love_id': love_id,
+                    'love_type': love_type
+                },
+                success: function (callback) {
+                    if (callback.status === 'ok') {
+                        $('#collect_org_btn').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
+        $('#collect_course_btn').click(function () {
+            let love_id = {{ current_course.id }};
+            let love_type = 2;
+            $.ajax({
+                url: '{% url 'operations:user_love' %}',
+                type: 'get',
+                data: {
+                    'love_id': love_id,
+                    'love_type': love_type
+                },
+                success: function (callback) {
+                    if (callback.status === 'ok') {
+                        $('#collect_course_btn').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
+    </script>
+{% endblock %}
