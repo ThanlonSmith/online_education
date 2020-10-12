@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import OrgInfo, CityInfo
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from ..operations.models import UserLove
 
 
 # Create your views here.
@@ -71,11 +72,18 @@ def org_home(request, org_id):
     # 当前机构的课程，维护数据
     curr_org_courses = curr_org.courseinfo_set.all()[:2]
     curr_org_teachers = curr_org.teacherinfo_set.all()[:1]
+    # 需要返回收藏机构的状态
+    love_status = False
+    if request.user.is_authenticated:
+        love = UserLove.objects.filter(love_man=request.user, love_id=org_id, love_type=1, love_status=True)
+        if love.exists():
+            love_status = True
     return render(request, 'orgs/org_home.html', {
         'curr_org': curr_org,
         'menu_title': 'org_home',
         'curr_org_courses': curr_org_courses,
-        'curr_org_teachers': curr_org_teachers
+        'curr_org_teachers': curr_org_teachers,
+        'love_status': love_status
     })
 
 
@@ -89,6 +97,12 @@ def org_course(request, org_id):
     paginator = Paginator(curr_org_courses, 2)
     # 获取总的页码数
     num_pages = paginator.num_pages
+    # 需要返回收藏机构的状态
+    love_status = False
+    if request.user.is_authenticated:
+        love = UserLove.objects.filter(love_man=request.user, love_id=org_id, love_type=1, love_status=True)
+        if love.exists():
+            love_status = True
     try:
         pages = paginator.page(page_num)
     except PageNotAnInteger:
@@ -100,16 +114,24 @@ def org_course(request, org_id):
         'curr_org': curr_org,
         'menu_title': 'org_course',
         'pages': pages,
-        'num_pages': num_pages
+        'num_pages': num_pages,
+        'love_status': love_status
     })
 
 
 # 机构介绍
 def org_desc(request, org_id):
     curr_org = OrgInfo.objects.filter(id=org_id).first()
+    # 需要返回收藏机构的状态
+    love_status = False
+    if request.user.is_authenticated:
+        love = UserLove.objects.filter(love_man=request.user, love_id=org_id, love_type=1, love_status=True)
+        if love.exists():
+            love_status = True
     return render(request, 'orgs/org_desc.html', {
         'curr_org': curr_org,
         'menu_title': 'org_desc',
+        'love_status': love_status
     })
 
 
@@ -120,6 +142,12 @@ def org_teacher(request, org_id):
     page_num = request.GET.get('page_num', '')
     paginator = Paginator(curr_org_teachers, 2)
     num_pages = paginator.num_pages
+    # 需要返回收藏机构的状态
+    love_status = False
+    if request.user.is_authenticated:
+        love = UserLove.objects.filter(love_man=request.user, love_id=org_id, love_type=1, love_status=True)
+        if love.exists():
+            love_status = True
     try:
         pages = paginator.page(page_num)
     except PageNotAnInteger:
@@ -130,5 +158,6 @@ def org_teacher(request, org_id):
         'curr_org': curr_org,
         'menu_title': 'org_teacher',
         'pages': pages,
-        'num_pages': num_pages
+        'num_pages': num_pages,
+        'love_status': love_status
     })

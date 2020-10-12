@@ -71,7 +71,8 @@ def user_login(request):
                 else:
                     return HttpResponse('请到邮箱中激活用户，否则无法登录系统！')
             return render(request, 'users/login.html', {
-                'msg': '用户名或密码不正确！'
+                'msg': '用户名或密码不正确！',
+                'user_login_form': user_login_form
             })
         return render(request, 'users/login.html', {
             'user_login_form': user_login_form

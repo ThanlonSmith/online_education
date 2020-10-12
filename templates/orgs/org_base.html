@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block css %}
     <style>
-        #collect {
+        #love {
             width: 100px;
             height: 30px;
             line-height: 30px;
             color: #fff;
             text-align: center;
-            background: #5cb85c url(/static{{ MEDIA_URL }}org/star-btn.png) no-repeat 15px center;
+            background: #5cb85c url(/static{{ MEDIA_URL }}org/star-btn.png) no-repeat 5px center;
             text-indent: 15px;
             border-radius: 2px;
             cursor: pointer;
@@ -30,7 +30,9 @@
                 </div>
                 <div class="media-body"></div>
                 <div class="media-right">
-                    <div id="collect">收藏</div>
+                    <div id="love">
+                        {% if love_status %}取消收藏{% else %}收藏{% endif %}
+                    </div>
                 </div>
             </div>
             <ol class="breadcrumb" style="margin:8px 0">
@@ -67,6 +69,25 @@
 {% endblock %}
 {% block js %}
     <script>
-        $('#nav-orgs').css({'color': '#a52a2a'})
+        $('#nav-orgs').css({'color': '#a52a2a'});
+        $('#love').click(function () {
+            let love_id = {{ curr_org.id }};
+            let love_type = 1;
+            $.ajax({
+                url: '{% url 'operations:user_love' %}',
+                type: 'get',
+                data: {
+                    'love_id': love_id,
+                    'love_type': love_type
+                },
+                success: function (callback) {
+                    if (callback.status === 'ok') {
+                        $('#love').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
     </script>
 {% endblock %}
