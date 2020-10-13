@@ -107,7 +107,8 @@
                                      收藏
                                  {% endif %}
                                 </span>
-                            <a href=""><span id="start_study" class="pull-right">开始学习</span></a>
+                            <a href="{% url 'course:course_video' current_course.id %}"><span id="start_study"
+                                                                                              class="pull-right">开始学习</span></a>
                         </p>
                     </div>
                 </div>
@@ -163,23 +164,23 @@
                 <div class="panel-heading">相关课程推荐</div>
                 <div class="panel-body" style="padding: 8px">
                     {% for course in relate_course %}
-                            <div class="thumbnail" style="margin-bottom:0">
-                                <a href="{% url 'courses:course_detail' course.id %}">
-                                    <img data-src="holder.js/100%x150" alt="100%x150"
-                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
-                                </a>
-                                <div class="caption" style="padding-bottom: 0">
-                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
-                                    <p style="font-size: 12px;color: #9f9f9f">
+                        <div class="thumbnail" style="margin-bottom:0">
+                            <a href="{% url 'courses:course_detail' course.id %}">
+                                <img data-src="holder.js/100%x150" alt="100%x150"
+                                     src="/static{{ MEDIA_URL }}{{ course.image }}">
+                            </a>
+                            <div class="caption" style="padding-bottom: 0">
+                                <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                <p style="font-size: 12px;color: #9f9f9f">
                                         <span>
                                             学习时长：
                                             <span style="color: #fb8341">
                                                 {{ course.study_time }}
                                             </span>
                                         </span>
-                                    </p>
-                                </div>
+                                </p>
                             </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}{{ current_course.name }}-公开课章节信息{% endblock %}
+{% block css %}
+    <style>
+     #course_introduce {
+            height: 125px;
+            background-color: #504d3b;
+            color: white;
+            font-size: 18px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
+            <ol class="breadcrumb" style="margin-top:8px;margin-bottom: 0">
+                <li><a href="{% url 'index' %}">首页</a></li>
+                <li><a href="{% url 'courses:course_list' %}">公开课</a></li>
+                <li><a href="{% url 'courses:course_detail' current_course.id %}">课程详情</a></li>
+                <li class="active">章节信息</li>
+            </ol>
+        </div>
+        <div class="col-md-12" style="padding-left: 2px;padding-right: 2px;margin:30px 0">
+            <div id="course_introduce">
+                <div style="font-size: 28px;font-weight: bold;padding:10px">{{ current_course.name }}</div>
+                <div class="pull-left" style="padding-left: 10px;">
+                    <span style="display: block;opacity: .6">
+                         {% if current_course.level == 'cj' %}
+                            初级
+                        {% elif current_course == 'zj' %}
+                        中级
+                        {% elif current_course == 'gj' %}
+                            高级
+                        {% endif %}
+                    </span>
+                    <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">难度</span>
+                </div>
+                 <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
+                    <span style="display: block;opacity: .6">{{ current_course.study_time }}</span>
+                    <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">时长</span>
+                </div>
+                 <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
+                   <span style="display: block;opacity: .6">{{ current_course.study_num }}</span>
+                    <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">学习人数</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" style="padding: 0 2px">
+            <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;border: 1px solid #dddddd">
+                <ul style="padding-left: 0;">
+
+                    <li style="float: left;list-style-type: none;margin: 0 16px;">
+                        <a style="color: #333;text-decoration:none;height: 50px;display: inline-block"
+                           href="{% url 'courses:course_video' current_course.id %}">章节</a>
+                    </li>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;">
+                        <a style="color: #f01400;font-weight:bold;text-decoration: none;height: 50px;display: inline-block;border-bottom: 0 solid red;border-bottom-width: medium;"
+                           href="{% url 'courses:course_comment' current_course.id %}">评论</a>
+                    </li>
+                    <li style="clear: both;list-style: none;"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3" style="padding: 0 2px">
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-heading">资料下载</div>
+                <div class="panel-body">
+                    <div>
+                        <span class="pull-left"><span class="glyphicon glyphicon-folder-open"></span>课程相关资料</span>
+                        <a href=""><span class="glyphicon glyphicon-download-alt pull-right"
+                                         style="color: #39b94e;"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">学过该课程的同学还学过</div>
+                <div class="panel-body" style="padding: 8px">
+                    {% for course in relate_course %}
+                        <div class="thumbnail" style="margin-bottom:0">
+                            <a href="{% url 'courses:course_detail' course.id %}">
+                                <img data-src="holder.js/100%x150" alt="100%x150"
+                                     src="/static{{ MEDIA_URL }}{{ course.image }}">
+                            </a>
+                            <div class="caption" style="padding-bottom: 0">
+                                <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                <p style="font-size: 12px;color: #9f9f9f">
+                                        <span>
+                                            学习时长：
+                                            <span style="color: #fb8341">
+                                                {{ course.study_time }}
+                                            </span>
+                                        </span>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-courses').css({'color': '#a52a2a'})
+    </script>
+{% endblock %}

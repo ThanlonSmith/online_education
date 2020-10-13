@@ -71,3 +71,22 @@ def course_detail(request, course_id):
                         'org_love': org_love,
                         'course_love': course_love
                     })
+
+
+# 课程视频
+def course_video(request, course_id):
+    current_course = CourseInfo.objects.filter(id=course_id)
+    if current_course.exists():
+        current_course = current_course.first()
+    return render(request, 'courses/course_video.html', {
+        'current_course': current_course,
+    })
+
+# 课程评论
+def course_comment(request, course_id):
+    current_course = CourseInfo.objects.filter(id=course_id)
+    if current_course.exists():
+        current_course = current_course.first()
+    return render(request, 'courses/course_comment.html', {
+        'current_course': current_course,
+    })

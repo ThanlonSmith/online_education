@@ -9,15 +9,14 @@ class CourseInfoXadmin:
     model_icon = 'fa fa-user'
 
 class LessonInfoXadmin:
-    pass
-
+    list_display = ['name','course_info','add_time']
 
 class VideoInfoXadmin:
-    pass
+    list_display = ['name','study_time','url','lesson_info','add_time']
 
 
 class SourceInfoXadmin:
-    pass
+    list_display =['name','down_load','course_info','add_time']
 
 
 xadmin.site.register(CourseInfo, CourseInfoXadmin)
