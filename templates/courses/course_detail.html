@@ -98,7 +98,13 @@
                                 算法
                             {% endif %}
                         </p>
-                        <p style="color: #9f9f9f;font-size: 12px">学习用户：</p>
+                        <p style="color: #9f9f9f;font-size: 12px">学习用户：
+                            {% for user_course in current_course.usercourse_set.all|slice:':2' %}
+                            <span>
+                            <img class="" width="30" src="/static{{ MEDIA_URL }}{{ user_course.study_man.image }}" alt="">
+                            </span>
+                            {% endfor %}
+                        </p>
                         <p style="color: #9f9f9f;font-size: 12px">
                                 <span id="collect_course_btn" class="pull-left" style="cursor: pointer">
                                  {% if course_love %}

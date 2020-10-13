@@ -2,7 +2,7 @@
 {% block title %}{{ current_course.name }}-公开课章节信息{% endblock %}
 {% block css %}
     <style>
-     #course_introduce {
+        #course_introduce {
             height: 125px;
             background-color: #504d3b;
             color: white;
@@ -26,21 +26,21 @@
                 <div class="pull-left" style="padding-left: 10px;">
                     <span style="display: block;opacity: .6">
                          {% if current_course.level == 'cj' %}
-                            初级
-                        {% elif current_course == 'zj' %}
-                        中级
-                        {% elif current_course == 'gj' %}
-                            高级
-                        {% endif %}
+                             初级
+                         {% elif current_course == 'zj' %}
+                             中级
+                         {% elif current_course == 'gj' %}
+                             高级
+                         {% endif %}
                     </span>
                     <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">难度</span>
                 </div>
-                 <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
+                <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
                     <span style="display: block;opacity: .6">{{ current_course.study_time }}</span>
                     <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">时长</span>
                 </div>
-                 <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
-                   <span style="display: block;opacity: .6">{{ current_course.study_num }}</span>
+                <div class="pull-left" style="margin-left: 100px;border-left: 1px solid #666666;padding-left: 20px">
+                    <span style="display: block;opacity: .6">{{ current_course.study_num }}</span>
                     <span style="display: block;opacity: .4;font-size: 14px;margin-top: 5px">学习人数</span>
                 </div>
             </div>
@@ -67,15 +67,40 @@
                 <div class="panel-body">
                     <div>
                         <span class="pull-left"><span class="glyphicon glyphicon-folder-open"></span>课程相关资料</span>
-                        <a href=""><span class="glyphicon glyphicon-download-alt pull-right"
-                                         style="color: #39b94e;"></span></a>
+                        <a href="/static{{ MEDIA_URL }}{{ current_course.sourceinfo_set.all.0.down_load }}"><span
+                                class="glyphicon glyphicon-download-alt pull-right"
+                                style="color: #39b94e;"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="margin-bottom: 8px">
+                <div class="panel-heading">讲师</div>
+                <div class="panel-body">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="">
+                                <img width="50" class="media-object img-circle" data-src="" alt="64x64"
+                                     data-holder-rendered="true"
+                                     src="/static/{{ MEDIA_URL }}{{ current_course.teacher_info.image }}">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="" style="text-decoration:none;color: #333333">
+                                <h4 class="media-heading">{{ current_course.teacher_info.name }}</h4>
+                            </a>
+                            <ul style="font-size: 12px;">
+                                <li style="margin-top: 8px;color: #848484;">
+                                    {{ current_course.teacher_info.work_company }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">学过该课程的同学还学过</div>
                 <div class="panel-body" style="padding: 8px">
-                    {% for course in relate_course %}
+                    {% for course in course_list %}
                         <div class="thumbnail" style="margin-bottom:0">
                             <a href="{% url 'courses:course_detail' course.id %}">
                                 <img data-src="holder.js/100%x150" alt="100%x150"
@@ -98,6 +123,41 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block footer %}
+    <!--版权-->
+    <!-- <div class="col-md-12  text-center wow animate__animated animate__backInDown animate__delay-2s"-->
+    <div class="col-md-12  text-center wow animate__animated animate__fadeIn"
+         style="padding: 25px 0 25px;background: brown;margin-top: 8px">
+        <p style="margin: 0">
+            <a href="" style="color:white;font-weight: bold">关于本站</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">免责申明</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">联系我们</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">本站蓝图</a>&nbsp;&nbsp;
+        </p>
+        <p style="margin: 0">
+            <span style="color: white;font-weight: bold">Copyright © 2020-2022&nbsp; edu.pythoneers.cn. All Rights Reserved.</span>
+        </p>
+        <p style="margin: 0">
+            <a target="_blank_" href="http://www.miit.gov.cn/"
+               style="color:white;font-weight: bold">豫ICP备19037971号</a>
+            <a target="_blank">
+                <img src="{% static "public/images/beian.png" %}" style="padding-bottom:6px">
+                <span style="color:white;font-weight: bold">豫公网安备 41152802000091号</span>
+            </a>
+            <!--<span>版本号:1.1.0.190402_alpha</span>-->
+            <span>
+             <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+             document.write(unescape("%3Cspan id='cnzz_stat_icon_1278138602'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1278138602%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            <span id="cnzz_stat_icon_1278138602"></span>
+            <script src="http://s4.cnzz.com/z_stat.php?id=1278138602&amp;show=pic" type="text/javascript"></script>
+            <script src="http://c.cnzz.com/core.php?web_id=1278138602&amp;show=pic&amp;t=z" charset="utf-8"
+                    type="text/javascript">
+            </script>
+    </span>
+        </p>
+    </div>
+    <!--/版权-->
 {% endblock %}
 {% block js %}
     <script>

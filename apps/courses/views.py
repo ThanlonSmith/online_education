@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import CourseInfo
-from ..operations.models import UserLove
+from ..operations.models import UserLove, UserCourse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
@@ -75,18 +75,61 @@ def course_detail(request, course_id):
 
 # 课程视频
 def course_video(request, course_id):
-    current_course = CourseInfo.objects.filter(id=course_id)
-    if current_course.exists():
-        current_course = current_course.first()
-    return render(request, 'courses/course_video.html', {
-        'current_course': current_course,
-    })
+    if course_id:
+        current_course = CourseInfo.objects.filter(id=course_id)
+        if current_course.exists():
+            current_course = current_course.first()
+            """
+            学习过该课程的用户
+            """
+            user_course = UserCourse.objects.filter(study_man=request.user, study_course=current_course)
+            if not user_course.exists():
+                uc = UserCourse()
+                uc.study_man = request.user
+                uc.study_course = current_course
+                uc.save()
+            """
+            学习过该课的同学还学过什么课程
+            """
+            # course_list = [j.study_course for j in (user.usercourse_set.all() for user in user_list)]
+            # print(course_list)
+            # 分别获取每个用户课程，然后去掉重复的课程，包括当前的课程
+            # 1、从中间表“用户课程表”中找到学习过该课程的所有用户课程列表
+            user_course_list = UserCourse.objects.filter(
+                study_course=current_course)  # user_course_list = current_course.usercourse_set.all()
+            # 2、拿到学习过该们课程的用户列表
+            user_list = [user_course.study_man for user_course in user_course_list]
+            # 3、获取这些用户学过的课程，去除当前学过的课程
+            user_course_list = UserCourse.objects.filter(study_man__in=user_list).exclude(study_course=current_course)
+            # 4、获取其它课程
+            course_list = list(set([user_course.study_course for user_course in user_course_list]))
+            return render(request, 'courses/course_video.html', {
+                'current_course': current_course,
+                'course_list': course_list
+            })
+
 
 # 课程评论
 def course_comment(request, course_id):
     current_course = CourseInfo.objects.filter(id=course_id)
     if current_course.exists():
         current_course = current_course.first()
+        """
+        学习过该课的同学还学过什么课程
+        """
+        # course_list = [j.study_course for j in (user.usercourse_set.all() for user in user_list)]
+        # print(course_list)
+        # 分别获取每个用户课程，然后去掉重复的课程，包括当前的课程
+        # 1、从中间表“用户课程表”中找到学习过该课程的所有用户课程列表
+        user_course_list = UserCourse.objects.filter(
+            study_course=current_course)  # user_course_list = current_course.usercourse_set.all()
+        # 2、拿到学习过该们课程的用户列表
+        user_list = [user_course.study_man for user_course in user_course_list]
+        # 3、获取这些用户学过的课程，去除当前学过的课程
+        user_course_list = UserCourse.objects.filter(study_man__in=user_list).exclude(study_course=current_course)
+        # 4、获取其它课程
+        course_list = list(set([user_course.study_course for user_course in user_course_list]))
     return render(request, 'courses/course_comment.html', {
         'current_course': current_course,
+        'course_list':course_list,
     })

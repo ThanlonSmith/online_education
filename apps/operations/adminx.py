@@ -12,7 +12,7 @@ class UserLoveXadmin:
 
 
 class UserCourseXadmin:
-    pass
+    list_display = ['study_man', 'study_course', 'add_time']
 
 
 class UserCommentXadmin:
