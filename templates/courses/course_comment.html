@@ -70,31 +70,88 @@
                             </div>
                         </div>
                     </form>
-                    <hr>
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="">
-                                <img width="60" class="media-object img-circle" data-src="" alt="64x64"
-                                     data-holder-rendered="true"
-                                     src="/static/media/teacher/u2349976601387342489fm26gp0.jpg">
-                            </a>
+                    {% for comment in pages %}
+                        <hr>
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="javascript:">
+                                    <img width="70" class="media-object img-circle" data-src="" alt="64x64"
+                                         data-holder-rendered="true"
+                                         src="/static{{ MEDIA_URL }}{{ comment.comment_man.image }}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <p style="text-decoration:none;color: #333333">
+                                <h4 class="media-heading">{{ comment.comment_man.nick_name }}</h4>
+                                </p>
+                                <ul style="font-size: 12px;list-style: none;padding:0">
+                                    <li style="margin-top: 5px;">
+                                        {{ comment.comment_content }}
+                                    </li>
+                                    <li style="margin-top: 5px;color: #848484;">
+                                        发表于：{{ comment.add_time }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="media-body">
-                            <a href="" style="text-decoration:none;color: #333333">
-                                <h4 class="media-heading">erics</h4>
-                            </a>
-                            <ul style="font-size: 12px;list-style: none;padding:0">
-                                <li style="margin-top: 5px;">
-                                    讲的很棒！加油~ 么么哒！
-                                </li>
-                                <li style="margin-top: 5px;color: #848484;">
-                                    发表于：2020年10月11日 14:17
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
+            <nav aria-label="Page navigation" class="text-center" style="padding-bottom: 10px">
+                <ul class="pagination">
+                    <li>
+                        <a href="?page_num=1"
+                           aria-label="Previous">
+                            <span aria-hidden="true">首页</span>
+                        </a>
+                    </li>
+                    {% if pages.has_previous %}
+                        <li>
+                            <a href="?page_num={{ pages.previous_page_number }}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled">
+                            <a href="javascript:" aria-label="Previous">
+                                <span aria-hidden="true">上一页</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for num in pages.paginator.page_range %}
+                        {% if pages.number == num %}
+                            <li class="active"><a
+                                    href="?page_num={{ num }}">{{ num }}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page_num={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pages.has_next %}
+                        <li>
+                            <a href="?page_num={{ pages.next_page_number }}"
+                               aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled">
+                            <a href="javascript:" aria-label="Next">
+                                <span aria-hidden="true">下一页</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="?page_num={{ num_pages }}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">尾页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-md-3" style="padding: 0 2px">
             <div class="panel panel-default" style="margin-bottom: 8px">
@@ -217,6 +274,7 @@
                             alert('很遗憾' + callback.msg)
                             $('#comment_content').val('')
                         }
+                        location.reload()
                     }
                 })
             })

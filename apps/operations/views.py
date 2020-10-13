@@ -63,8 +63,8 @@ def user_love(request):
     return JsonResponse(ret)
 
 
-# 用户评论课程功能
-def user_comment(request):
+# 课程评论
+def course_comment(request):
     if request.method == 'POST':
         ret = {'status': None, 'msg': None}
         user_comment_form = UserCommentForm(request.POST)

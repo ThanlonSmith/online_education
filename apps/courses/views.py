@@ -129,7 +129,23 @@ def course_comment(request, course_id):
         user_course_list = UserCourse.objects.filter(study_man__in=user_list).exclude(study_course=current_course)
         # 4、获取其它课程
         course_list = list(set([user_course.study_course for user_course in user_course_list]))
-    return render(request, 'courses/course_comment.html', {
-        'current_course': current_course,
-        'course_list':course_list,
-    })
+        """
+        评论列表的展示
+        """
+        comment_list = current_course.usercomment_set.order_by('-add_time')
+        page_num = request.GET.get('page_num', '')
+        paginator = Paginator(comment_list, per_page=5)
+        num_pages = paginator.num_pages
+        try:
+            pages = paginator.page(page_num)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(num_pages)
+        return render(request, 'courses/course_comment.html', {
+            'current_course': current_course,
+            'course_list': course_list,
+            'comment_list': comment_list,
+            'pages': pages,
+            'num_pages': num_pages
+        })
