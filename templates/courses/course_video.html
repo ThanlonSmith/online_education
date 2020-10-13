@@ -151,7 +151,7 @@
                 <div class="panel-heading">学过该课程的同学还学过</div>
                 <div class="panel-body" style="padding: 8px">
                     {% for course in course_list|slice:':3' %}
-                        <div class="thumbnail" style="margin-bottom:0">
+                        <div class="thumbnail" style="margin-bottom:8px">
                             <a href="{% url 'courses:course_detail' course.id %}">
                                 <img data-src="holder.js/100%x150" alt="100%x150"
                                      src="/static{{ MEDIA_URL }}{{ course.image }}">

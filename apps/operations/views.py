@@ -1,6 +1,8 @@
 from .forms import UserAskForm
 from django.http import JsonResponse
-from apps.operations.models import UserLove
+from apps.operations.models import UserLove, UserComment
+from .forms import UserCommentForm
+from apps.courses.models import CourseInfo
 
 
 # 用户咨询
@@ -59,3 +61,28 @@ def user_love(request):
     else:
         pass
     return JsonResponse(ret)
+
+
+# 用户评论课程功能
+def user_comment(request):
+    if request.method == 'POST':
+        ret = {'status': None, 'msg': None}
+        user_comment_form = UserCommentForm(request.POST)
+        if user_comment_form.is_valid():
+            course_id = user_comment_form.cleaned_data['course_id']
+            comment_content = user_comment_form.cleaned_data['comment_content']
+            if course_id and comment_content:
+                course_info = CourseInfo.objects.filter(id=course_id)
+                if course_info.exists():
+                    course_info = course_info.first()
+                    uc = UserComment()
+                    uc.comment_course = course_info
+                    uc.comment_content = comment_content
+                    uc.comment_man = request.user
+                    uc.save()
+                    ret['status'] = 'ok'
+                    ret['msg'] = '评论成功！'
+        else:
+            ret['status'] = 'fail'
+            ret['msg'] = '评论失败！'
+        return JsonResponse(ret)

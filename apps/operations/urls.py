@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import user_ask, user_love
+from .views import user_ask, user_love, user_comment
 
 urlpatterns = [
     path('user/ask', user_ask, name='user_ask'),
-    path('user/love', user_love, name='user_love')
+    path('user/love', user_love, name='user_love'),
+    path('user/comment', user_comment, name='user_comment')
 ]

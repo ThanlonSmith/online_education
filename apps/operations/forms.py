@@ -44,3 +44,9 @@ class UserAskForm(forms.ModelForm):
     def clean_course(self):
         course = self.cleaned_data['course']
         return course
+
+
+# 验证用户评论
+class UserCommentForm(forms.Form):
+    course_id = forms.IntegerField(required=True)
+    comment_content = forms.CharField(required=True, min_length=1, max_length=300)

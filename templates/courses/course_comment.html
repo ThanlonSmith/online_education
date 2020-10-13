@@ -48,7 +48,6 @@
         <div class="col-md-9" style="padding: 0 2px">
             <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;border: 1px solid #dddddd">
                 <ul style="padding-left: 0;">
-
                     <li style="float: left;list-style-type: none;margin: 0 16px;">
                         <a style="color: #333;text-decoration:none;height: 50px;display: inline-block"
                            href="{% url 'courses:course_video' current_course.id %}">章节</a>
@@ -57,8 +56,44 @@
                         <a style="color: #f01400;font-weight:bold;text-decoration: none;height: 50px;display: inline-block;border-bottom: 0 solid red;border-bottom-width: medium;"
                            href="{% url 'courses:course_comment' current_course.id %}">评论</a>
                     </li>
-                    <li style="clear: both;list-style: none;"></li>
                 </ul>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <textarea id="comment_content" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button type="button" class="btn btn-success" id="send_comment">发表评论</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="">
+                                <img width="60" class="media-object img-circle" data-src="" alt="64x64"
+                                     data-holder-rendered="true"
+                                     src="/static/media/teacher/u2349976601387342489fm26gp0.jpg">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="" style="text-decoration:none;color: #333333">
+                                <h4 class="media-heading">erics</h4>
+                            </a>
+                            <ul style="font-size: 12px;list-style: none;padding:0">
+                                <li style="margin-top: 5px;">
+                                    讲的很棒！加油~ 么么哒！
+                                </li>
+                                <li style="margin-top: 5px;color: #848484;">
+                                    发表于：2020年10月11日 14:17
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-3" style="padding: 0 2px">
@@ -101,7 +136,7 @@
                 <div class="panel-heading">学过该课程的同学还学过</div>
                 <div class="panel-body" style="padding: 8px">
                     {% for course in course_list %}
-                        <div class="thumbnail" style="margin-bottom:0">
+                        <div class="thumbnail" style="margin-bottom:8px">
                             <a href="{% url 'courses:course_detail' course.id %}">
                                 <img data-src="holder.js/100%x150" alt="100%x150"
                                      src="/static{{ MEDIA_URL }}{{ course.image }}">
@@ -162,5 +197,29 @@
 {% block js %}
     <script>
         $('#nav-courses').css({'color': '#a52a2a'})
+        $(function () {
+            $('#send_comment').click(function () {
+                let course_id = {{ current_course.id }};
+                let comment_content = $('#comment_content').val();
+                $.ajax({
+                    url: '{% url 'operations:user_comment' %}',
+                    type: 'post',
+                    data: {
+                        'course_id': course_id,
+                        'comment_content': comment_content,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (callback) {
+                        if (callback.status === 'ok') {
+                            alert('恭喜您' + callback.msg)
+                            $('#comment_content').val('')
+                        } else {
+                            alert('很遗憾' + callback.msg)
+                            $('#comment_content').val('')
+                        }
+                    }
+                })
+            })
+        })
     </script>
 {% endblock %}
