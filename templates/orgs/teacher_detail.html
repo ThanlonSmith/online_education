@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}授课教师详情{% endblock %}
+{% block css %}
+    <style>
+        #collect_org_btn {
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #ff7800;
+            border-radius: 2px;
+            color: #ff7800;
+            margin: 30px auto;
+            text-align: center;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }
+
+        .num {
+            background: url(/static/media/org/medal.png) no-repeat center center;
+            width: 23px;
+            height: 29px;
+            color: #fffc00;
+            text-align: center;
+            margin-top: 8px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+    <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
+        <ol class="breadcrumb" style="margin:8px 0">
+            <li><a href="{% url 'orgs:teacher_list' %}">授课教师</a></li>
+            <li class="active">教师详情</li>
+        </ol>
+    </div>
+    <div class="col-md-9" style="padding:0 2px">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left" style="padding: 10px">
+                        <img width="70" height="70" class="media-object img-circle" data-src="" alt="64x64"
+                             data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ current_teacher.image }}"
+                             style="margin: 0 auto;">
+                        <div>
+                            <div style="margin-top: 5px;line-height: 20px;background: #717171;color: #ffffff;cursor: pointer;font-size: 12px"
+                                 class="text-center">
+                                <span class="glyphicon glyphicon-star"></span>收藏
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ current_teacher.name }}
+                            <img width="23" height="29" src="/static/media/org/authentication.png"
+                                 data-src="holder.js/10x10">
+                            <span style="color: #fb8341">金牌讲师</span>
+                        </h4>
+                        <ul style="color: #848484;font-size: 12px;">
+                            <li style="margin-top: 3px">
+                                <span>工作年限：<span>{{ current_teacher.work_year }}</span>年</span>&nbsp;&nbsp;
+                                <span>年龄：<span>{{ current_teacher.age }}</span>岁</span>
+                            </li>
+                            <li style="margin-top: 3px">
+                                <span>工作职位：<span>{{ current_teacher.work_position }}</span></span>
+                            </li>
+                            <li style="margin-top: 3px">
+                                <span>就职公司：<span>{{ current_teacher.work_company }}</span></span>
+                            </li>
+                            <li style="margin-top: 3px">
+                                <span>教学特点：<span>{{ current_teacher.work_style }}</span></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" style="padding:0 2px">
+        <div class="panel panel-default" style="margin-bottom: 8px">
+            <div class="panel-heading">
+                <h3 class="panel-title">所属机构</h3>
+            </div>
+            <div class="panel-body" style="padding: 8px">
+                <div class="thumbnail" style="margin-bottom: 0">
+                    <a href="/orgs/home/1/">
+                        <img class="img-responsive" data-src="holder.js/100%x150" src="/static/media/org/beijing.jpg"
+                             alt="课程所属机构图片">
+                    </a>
+                    <div class="caption" style="padding-bottom: 0">
+                        <h5 style="font-weight: bold" class="text-center">北京大学</h5>
+                        <h5 style="font-weight: bold" class="text-center">所在地区：北京</h5>
+                        <a id="collect_org_btn">收藏</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-bottom: 8px">
+            <div class="panel-heading">
+                <h3 class="panel-title">讲师排行榜</h3>
+            </div>
+            <div class="panel-body">
+                {% for teacher in ranking_list %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="">
+                                <div class="num">{{ forloop.counter }}</div>
+                            </a>
+                        </div>
+                        <div class="media-left">
+                            <img width="50" height="50" src="/static{{ MEDIA_URL }}{{ teacher.image }}" alt="讲师头像">
+                        </div>
+                        <div class="media-body">
+                            <h5 class="media-heading">{{ teacher.name }}</h5>
+                            <span style="font-size: 12px;">
+                                    <span>工作年限：</span>
+                                    <span style="color:#848484;">{{ teacher.work_year }}年</span>
+                                </span>
+                        </div>
+                    </div>
+                    <!--<hr>-->
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <!--版权-->
+    <!-- <div class="col-md-12  text-center wow animate__animated animate__backInDown animate__delay-2s"-->
+    <div class="col-md-12  text-center wow animate__animated animate__fadeIn"
+         style="padding: 25px 0;background: brown;margin-top: 8px">
+
+        <p style="margin: 0">
+            <a href="" style="color:white;font-weight: bold">关于本站</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">免责申明</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">联系我们</a>&nbsp;&nbsp;
+            <a href="" style="color:white;font-weight: bold">本站蓝图</a>&nbsp;&nbsp;
+        </p>
+        <p style="margin: 0">
+            <span style="color: white;font-weight: bold">Copyright © 2020-2022&nbsp; edu.pythoneers.cn. All Rights Reserved.</span>
+        </p>
+        <p style="margin: 0">
+            <a target="_blank_" href="http://www.miit.gov.cn/"
+               style="color:white;font-weight: bold">豫ICP备19037971号</a>
+            <a target="_blank">
+                <img src="{% static "public/images/beian.png" %}" style="padding-bottom:6px">
+                <span style="color:white;font-weight: bold">豫公网安备 41152802000091号</span>
+            </a>
+            <!--<span>版本号:1.1.0.190402_alpha</span>-->
+            <span>
+             <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+             document.write(unescape("%3Cspan id='cnzz_stat_icon_1278138602'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1278138602%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+            <span id="cnzz_stat_icon_1278138602"></span>
+            <script src="http://s4.cnzz.com/z_stat.php?id=1278138602&amp;show=pic" type="text/javascript"></script>
+            <script src="http://c.cnzz.com/core.php?web_id=1278138602&amp;show=pic&amp;t=z" charset="utf-8"
+                    type="text/javascript">
+            </script>
+    </span>
+        </p>
+    </div>
+    <!--/版权-->
+{% endblock %}
+{% block js %}
+    <script>
+        $('#nav-teacher').css({'color': '#a52a2a'});
+    </script>
+{% endblock %}

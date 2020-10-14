@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import OrgInfo, CityInfo
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from ..operations.models import UserLove
+from .models import TeacherInfo
 
 
 # Create your views here.
@@ -160,4 +161,42 @@ def org_teacher(request, org_id):
         'pages': pages,
         'num_pages': num_pages,
         'love_status': love_status
+    })
+
+
+# 讲师列表
+def teacher_list(request):
+    # 讲师排行榜，根据收藏数量
+    ranking_list = TeacherInfo.objects.order_by('-love_num')[:2]
+    all_teacher = TeacherInfo.objects.all()
+    sort = request.GET.get('sort', '')
+    # 讲师排行榜，根据点击数量
+    if sort:
+        all_teacher = TeacherInfo.objects.order_by('-' + sort)
+    page_num = request.GET.get('page_num', '')
+    paginator = Paginator(all_teacher, per_page=2)
+    num_pages = paginator.num_pages
+    try:
+        pages = paginator.page(page_num)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(num_pages)
+    return render(request, 'orgs/teacher_list.html', {
+        'ranking_list': ranking_list,
+        'pages': pages,
+        'sort': sort,
+        'num_pages': num_pages
+    })
+
+
+# 讲师详情
+def teacher_detail(request, teacher_id):
+    ranking_list = TeacherInfo.objects.order_by('-love_num')[:2]
+    current_teacher = TeacherInfo.objects.filter(id=teacher_id)
+    if current_teacher.exists():
+        current_teacher = current_teacher[0]
+    return render(request, 'orgs/teacher_detail.html', {
+        'ranking_list': ranking_list,
+        'current_teacher': current_teacher
     })

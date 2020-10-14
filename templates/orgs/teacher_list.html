@@ -1,64 +1,93 @@
 {% extends 'base.html' %}
-{% block title %}公开课{% endblock %}
+{% block title %}授课教师{% endblock %}
 {% block css %}
+    <style>
+        .num {
+            background: url(/static/media/org/medal.png) no-repeat center center;
+            width: 23px;
+            height: 29px;
+            color: #fffc00;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .img-circle:hover {
+            background: #717171;
+        }
+
+        .img-circle:hover span {
+            color: white;
+        }
+    </style>
 {% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-12" style="padding-left: 2px;padding-right: 2px">
             <ol class="breadcrumb" style="margin:8px 0">
-                <li class="active">公开课</li>
+                <li class="active">授课教师</li>
                 <li><a href="{% url 'index' %}"></a></li>
             </ol>
         </div>
         <div class="col-md-9" style="padding:0 2px">
             <div style="background-color: #f8f8f8;height: 50px;line-height: 50px;border: 1px solid #ddd;">
                 <ul style="padding-left: 0;">
-                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
-                            style="color: #333;text-decoration:none;height: 50px;display: inline-block"
-                            href="?sort=">最新</a>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;">
+                        <a style="color: #333;text-decoration:none;height: 50px;" href="?sort=">全部</a>
                     </li>
-                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
-                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
-                            href="?sort=click_num">最热门</a>
-                    </li>
-                    <li style="float: left;list-style-type: none;margin: 0 16px;"><a
-                            style="color: #333;text-decoration: none;height: 50px;display: inline-block"
-                            href="?sort=study_num">参与人数</a>
+                    <li style="float: left;list-style-type: none;margin: 0 16px;">
+                        <a style="color: #333;text-decoration: none;height: 50px;" href="?sort=click_num">人气<span
+                                class="glyphicon glyphicon-arrow-down" style="font-size: 12px"></span></a>
                     </li>
                     <li style="clear: both;list-style: none;"></li>
+                    <!--<div style="clear: both;"></div>-->
                 </ul>
             </div>
             <div class="panel panel-default" style="margin-bottom: 8px">
-                <div class="panel-body">
-                    {% for course in pages %}
-                        <div style="padding-left:2px;padding-right:2px" class="col-sm-6 col-md-3">
-                            <div class="thumbnail">
-                                <a href="{% url 'courses:course_detail' course.id %}">
-                                    <img data-src="holder.js/100%x150" alt="100%x150"
-                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
-                                </a>
-                                <div class="caption" style="padding-bottom: 0">
-                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
-                                    <p style="font-size: 12px;color: #9f9f9f">
-                                        <span style="float: left">课时：<span
-                                                style="color: #fb8341">{{ course.study_time }}</span></span>
-                                        <span style="float: right">参加人数：<span
-                                                style="color: #fb8341">{{ course.study_num }}</span></span>
-                                    <div style="clear: both"></div>
-                                    </p>
-                                    <p style="font-size: 12px;color: #9f9f9f;">
-                                <span class="pull-left text-center"
-                                      style="background-color: #f0f0f0;line-height: 30px;width: 70%;">
-                                    {{ course.org_info.name }}
-                                </span>
-                                        <span class="pull-right text-center"
-                                              style="background-color: #f0f0f0;line-height: 30px;width: 29%"><span
-                                                class="glyphicon glyphicon-star"></span>{{ course.love_num }}</span>
-                                    <div style="clear:both;"></div>
-                                    </p>
+                <div class="panel-body" style="padding-bottom: 0">
+                    {% for teacher in pages %}
+                        <div class="media">
+                            <div class="media-left">
+                                <img width="70" height="70" class="media-object img-circle" data-src=""
+                                     alt="64x64"
+                                     data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ teacher.image }}">
+                                <div style="margin-top: 18px;line-height: 20px;background: #717171;color: #ffffff;cursor: pointer;font-size: 12px"
+                                     class="text-center"><span class="glyphicon glyphicon-star"></span>收藏
                                 </div>
                             </div>
+                            <div class="media-body">
+                                {#<a href="{% url 'orgs:org_home' teacher.id %}" style="text-decoration:none;color: #333333">#}
+                                <h4 class="media-heading">{{ teacher.name }}
+                                    <img width="23" height="29" src="/static/media/org/authentication.png"
+                                         data-src="holder.js/10x10">
+                                    <span style="color: #fb8341">金牌讲师</span>
+                                </h4>
+                                {#</a>#}
+                                <ul style="color: #848484;font-size: 12px;">
+                                    <li style="margin-top: 3px">
+                                        <span>工作年限：<span>{{ teacher.work_year }}</span>年</span>&nbsp;&nbsp;
+                                        <span>年龄：<span>{{ teacher.age }}</span>岁</span>
+                                    </li>
+                                    <li style="margin-top: 3px">
+                                        <span>工作职位：<span>{{ teacher.work_position }}</span></span>
+                                    </li>
+                                    <li style="margin-top: 3px">
+                                        <span>就职公司：<span>{{ teacher.work_company }}</span></span>
+                                    </li>
+                                    <li style="margin-top: 3px">
+                                        <span>教学特点：<span>{{ teacher.work_style }}</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="media-right" style="padding-top: 8px">
+                                <a href="{% url 'orgs:teacher_detail' teacher.id %}" style="text-decoration: none;">
+                                    <div class="img-circle"
+                                         style="width: 80px;height: 80px;border: 1px solid #717171;color: #717171;">
+                                        <span style="position: relative;left: 25px;top: 19px;">查看<br>详情</span>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
+                        <hr>
                     {% endfor %}
                 </div>
                 <nav aria-label="Page navigation" class="text-center" style="padding-bottom: 10px">
@@ -121,35 +150,28 @@
         <div class="col-md-3" style="padding:0 2px">
             <div class="panel panel-default" style="margin-bottom: 8px">
                 <div class="panel-heading">
-                    <h3 class="panel-title">热门课程推荐</h3>
+                    <h3 class="panel-title">讲师排行榜</h3>
                 </div>
                 <div class="panel-body">
-                    {% for course in recommend_courses %}
-                        <div style="padding-left:2px;padding-right:2px" class="col-sm-12 col-md-12">
-                            <div class="thumbnail">
-                                <a href="{% url 'courses:course_detail' course.id %}">
-                                    <img data-src="holder.js/100%x150" alt="100%x150"
-                                         src="/static{{ MEDIA_URL }}{{ course.image }}">
+                    {% for teacher in ranking_list %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="">
+                                    <div class="num">{{ forloop.counter }}</div>
                                 </a>
-                                <div class="caption" style="padding-bottom: 0">
-                                    <h5 style="font-weight: bold">{{ course.name }}</h5>
-                                    <p style="font-size: 12px;color: #9f9f9f">
-                                        <span>
-                                            难度：
-                                            <span style="color: #fb8341">
-                                            {% if course.level == 'gj' %}
-                                                高级
-                                            {% elif course.level == 'zj' %}
-                                                中级
-                                            {% elif course.level == 'cj' %}
-                                                初级
-                                            {% endif %}
-                                            </span>
-                                        </span>
-                                    </p>
-                                </div>
+                            </div>
+                            <div class="media-left">
+                                <img width="50" height="50" src="/static{{ MEDIA_URL }}{{ teacher.image }}" alt="讲师头像">
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading">{{ teacher.name }}</h5>
+                                <span style="font-size: 12px;">
+                                    <span>工作年限：</span>
+                                    <span style="color:#848484;">{{ teacher.work_year }}年</span>
+                                </span>
                             </div>
                         </div>
+                        <!--<hr>-->
                     {% endfor %}
                 </div>
             </div>
@@ -193,6 +215,6 @@
 {% endblock %}
 {% block js %}
     <script>
-        $('#nav-courses').css({'color': '#a52a2a'})
+        $('#nav-teacher').css({'color': '#a52a2a'})
     </script>
 {% endblock %}

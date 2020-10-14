@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from .views import org_list, org_home, org_course, org_desc, org_teacher
+from .views import org_list, org_home, org_course, org_desc, org_teacher, teacher_list,teacher_detail
 
 urlpatterns = [
     path('list/', org_list, name='org_list'),
@@ -23,4 +23,6 @@ urlpatterns = [
     re_path('^course/(\d+)/$', org_course, name='org_course'),
     re_path('^desc/(\d+)/$', org_desc, name='org_desc'),
     re_path('^teacher/(\d+)/$', org_teacher, name='org_teacher'),
+    re_path('^teacher/list/$', teacher_list, name='teacher_list'),
+    re_path('^teacher/detail/(\d+)$', teacher_detail, name='teacher_detail'),
 ]

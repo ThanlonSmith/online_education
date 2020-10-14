@@ -71,6 +71,11 @@ def course_detail(request, course_id):
                         'org_love': org_love,
                         'course_love': course_love
                     })
+                else:
+                    return render(request, 'courses/course_detail.html', {
+                        'current_course': current_course,
+                        'relate_course': relate_course,
+                    })
 
 
 # 课程视频
