@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from apps.operations.models import UserLove, UserComment
 from .forms import UserCommentForm
 from apps.courses.models import CourseInfo
+from apps.orgs.models import OrgInfo, TeacherInfo
 
 
 # 用户咨询
@@ -31,6 +32,14 @@ def user_love(request):
         love_id = request.GET.get('love_id', '')
         love_type = request.GET.get('love_type', '')
         if love_id and love_type:
+            obj = None
+            love_type = int(love_type)
+            if love_type == 1:
+                obj = OrgInfo.objects.filter(id=love_id).first()
+            if love_type == 2:
+                obj = CourseInfo.objects.filter(id=love_id).first()
+            if love_type == 3:
+                obj = TeacherInfo.objects.filter(id=love_id).first()
             # 查看用户是否已经收藏过
             user_love = UserLove.objects.filter(love_id=love_id, love_type=love_type, love_man=request.user)
             # user_love_first = user_love.first()
@@ -40,11 +49,15 @@ def user_love(request):
                 if user_love_first.love_status:
                     user_love_first.love_status = False
                     user_love_first.save()
+                    obj.love_num -= 1
+                    obj.save()
                     ret['status'] = 'ok'
                     ret['msg'] = '收藏'
                 else:
                     user_love_first.love_status = True
                     user_love_first.save()
+                    obj.love_num += 1
+                    obj.save()
                     ret['status'] = 'ok'
                     ret['msg'] = '取消收藏'
             else:
@@ -54,6 +67,8 @@ def user_love(request):
                 ul.love_type = love_type
                 ul.love_status = True
                 ul.save()
+                obj.love_num += 1
+                obj.save()
                 ret['status'] = 'ok'
                 ret['msg'] = '取消收藏'
         else:

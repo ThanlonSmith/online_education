@@ -87,7 +87,7 @@
                 {% for course in current_teacher.courseinfo_set.all %}
                     <div style="padding-left:2px;padding-right:2px" class="col-sm-6 col-md-3">
                         <div class="thumbnail">
-                            <a href="">
+                            <a href="{% url 'courses:course_detail' course.id %}">
                                 <img data-src="holder.js/100%x150" alt="100%x150"
                                      src="/static{{ MEDIA_URL }}{{ course.image }}">
                             </a>

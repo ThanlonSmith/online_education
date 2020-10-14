@@ -7,14 +7,14 @@
             {% for teacher in pages %}
                 <div class="media">
                     <div class="media-left">
-                        <a href="">
+                        <a href="{% url 'orgs:teacher_detail' teacher.id %}">
                             <img width="60px" class="media-object img-circle" data-src="" alt="64x64"
                                  data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ teacher.image }}">
                         </a>
                         <div style="margin-top: 3px" class="text-center">{{ teacher }}</div>
                     </div>
                     <div class="media-body">
-                        <a href="" style="text-decoration:none;color: #333333">
+                        <a href="{% url 'orgs:teacher_detail' teacher.id %}" style="text-decoration:none;color: #333333">
                             <h4 class="media-heading">{{ teacher.courseinfo_set.all.0 }}</h4>
                             {#                            <h4 class="media-heading">{{ teacher.courseinfo_set.all.first }}</h4>#}
                         </a>

@@ -95,6 +95,19 @@ def course_video(request, course_id):
                 uc.study_man = request.user
                 uc.study_course = current_course
                 uc.save()
+                # 学习人数加1
+                current_course.study_num += 1
+                current_course.save()
+                # current_course.org_info.study_num += 1
+                """
+                需要考虑：这个用户学过的所有课程中是不是有这个这个机构的课程？如果有才加1
+                """
+                user_course_list = UserCourse.objects.filter(study_man=request.user)
+                course_list = [course.study_course for course in user_course_list]
+                org_list = list(set([course.org_info for course in course_list]))
+                if current_course.org_info not in org_list:
+                    current_course.org_info.study_num += 1
+                    current_course.org_info.save()
             """
             学习过该课的同学还学过什么课程
             """
@@ -110,6 +123,7 @@ def course_video(request, course_id):
             user_course_list = UserCourse.objects.filter(study_man__in=user_list).exclude(study_course=current_course)
             # 4、获取其它课程
             course_list = list(set([user_course.study_course for user_course in user_course_list]))
+
             return render(request, 'courses/course_video.html', {
                 'current_course': current_course,
                 'course_list': course_list
