@@ -35,7 +35,7 @@
         </ol>
     </div>
     <div class="col-md-9" style="padding:0 2px">
-        <div class="panel panel-default">
+        <div class="panel panel-default" style="margin-bottom: 8px">
             <div class="panel-body">
                 <div class="media">
                     <div class="media-left" style="padding: 10px">
@@ -43,10 +43,17 @@
                              data-holder-rendered="true" src="/static{{ MEDIA_URL }}{{ current_teacher.image }}"
                              style="margin: 0 auto;">
                         <div>
-                            <div style="margin-top: 5px;line-height: 20px;background: #717171;color: #ffffff;cursor: pointer;font-size: 12px"
-                                 class="text-center">
-                                <span class="glyphicon glyphicon-star"></span>收藏
-                            </div>
+                            <a id="collect_teacher_btn" style="margin-top: 5px;line-height: 20px;background: #717171;color: #ffffff;cursor: pointer;font-size: 12px;display: block;text-decoration: none"
+                               class="text-center">
+                                <span class="glyphicon glyphicon-star"></span>
+                                <span id="collect_teacher_content">
+                                 {% if teacher_love %}
+                                     取消收藏
+                                 {% else %}
+                                     收藏
+                                 {% endif %}
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div class="media-body">
@@ -74,6 +81,41 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">全部课程</div>
+            <div class="panel-body">
+                {% for course in current_teacher.courseinfo_set.all %}
+                    <div style="padding-left:2px;padding-right:2px" class="col-sm-6 col-md-3">
+                        <div class="thumbnail">
+                            <a href="">
+                                <img data-src="holder.js/100%x150" alt="100%x150"
+                                     src="/static{{ MEDIA_URL }}{{ course.image }}">
+                            </a>
+                            <div class="caption" style="padding-bottom: 0">
+                                <h5 style="font-weight: bold">{{ course.name }}</h5>
+                                <p style="font-size: 12px;color: #9f9f9f">
+                                    <span style="float: left">课时：<span style="color: #fb8341">{{ course.study_time }} min</span></span>
+                                    <span style="float: right">参加人数：<span
+                                            style="color: #fb8341">{{ course.study_num }}</span></span>
+                                </p>
+                                <div style="clear: both"></div>
+                                <p></p>
+                                <p style="font-size: 12px;color: #9f9f9f;">
+                                <span class="pull-left text-center"
+                                      style="background-color: #f0f0f0;line-height: 30px;width: 70%;">
+                                    {{ course.org_info }}
+                                </span>
+                                    <span class="pull-right text-center"
+                                          style="background-color: #f0f0f0;line-height: 30px;width: 29%"><span
+                                            class="glyphicon glyphicon-star"></span>{{ course.love_num }}</span>
+                                </p>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <div class="col-md-3" style="padding:0 2px">
         <div class="panel panel-default" style="margin-bottom: 8px">
@@ -89,7 +131,13 @@
                     <div class="caption" style="padding-bottom: 0">
                         <h5 style="font-weight: bold" class="text-center">北京大学</h5>
                         <h5 style="font-weight: bold" class="text-center">所在地区：北京</h5>
-                        <a id="collect_org_btn">收藏</a>
+                        <a id="collect_org_btn">
+                            {% if org_love %}
+                                取消收藏
+                            {% else %}
+                                收藏
+                            {% endif %}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -123,44 +171,48 @@
         </div>
     </div>
 {% endblock %}
-{% block footer %}
-    <!--版权-->
-    <!-- <div class="col-md-12  text-center wow animate__animated animate__backInDown animate__delay-2s"-->
-    <div class="col-md-12  text-center wow animate__animated animate__fadeIn"
-         style="padding: 25px 0;background: brown;margin-top: 8px">
-
-        <p style="margin: 0">
-            <a href="" style="color:white;font-weight: bold">关于本站</a>&nbsp;&nbsp;
-            <a href="" style="color:white;font-weight: bold">免责申明</a>&nbsp;&nbsp;
-            <a href="" style="color:white;font-weight: bold">联系我们</a>&nbsp;&nbsp;
-            <a href="" style="color:white;font-weight: bold">本站蓝图</a>&nbsp;&nbsp;
-        </p>
-        <p style="margin: 0">
-            <span style="color: white;font-weight: bold">Copyright © 2020-2022&nbsp; edu.pythoneers.cn. All Rights Reserved.</span>
-        </p>
-        <p style="margin: 0">
-            <a target="_blank_" href="http://www.miit.gov.cn/"
-               style="color:white;font-weight: bold">豫ICP备19037971号</a>
-            <a target="_blank">
-                <img src="{% static "public/images/beian.png" %}" style="padding-bottom:6px">
-                <span style="color:white;font-weight: bold">豫公网安备 41152802000091号</span>
-            </a>
-            <!--<span>版本号:1.1.0.190402_alpha</span>-->
-            <span>
-             <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-             document.write(unescape("%3Cspan id='cnzz_stat_icon_1278138602'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1278138602%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-            <span id="cnzz_stat_icon_1278138602"></span>
-            <script src="http://s4.cnzz.com/z_stat.php?id=1278138602&amp;show=pic" type="text/javascript"></script>
-            <script src="http://c.cnzz.com/core.php?web_id=1278138602&amp;show=pic&amp;t=z" charset="utf-8"
-                    type="text/javascript">
-            </script>
-    </span>
-        </p>
-    </div>
-    <!--/版权-->
-{% endblock %}
 {% block js %}
     <script>
         $('#nav-teacher').css({'color': '#a52a2a'});
+        //收藏机构
+        $('#collect_org_btn').click(function () {
+            let love_id = {{ current_teacher.work_company.id }};
+            let love_type = 1;
+            $.ajax({
+                url: '{% url 'operations:user_love' %}',
+                type: 'get',
+                data: {
+                    'love_id': love_id,
+                    'love_type': love_type
+                },
+                success: function (callback) {
+                    if (callback.status === 'ok') {
+                        $('#collect_org_btn').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
+        //收藏教师
+        $('#collect_teacher_btn').click(function () {
+            let love_id = {{ current_teacher.id }};
+            let love_type = 3;
+            $.ajax({
+                url: '{% url 'operations:user_love' %}',
+                type: 'get',
+                data: {
+                    'love_id': love_id,
+                    'love_type': love_type
+                },
+                success: function (callback) {
+                    if (callback.status === 'ok') {
+                        $('#collect_teacher_content').text(callback.msg)
+                    } else {
+                        alert(callback.msg)
+                    }
+                }
+            })
+        })
     </script>
 {% endblock %}

@@ -53,6 +53,8 @@ def course_detail(request, course_id):
             current_course = CourseInfo.objects.filter(id=course_id)
             if current_course.exists():
                 current_course = current_course.first()
+                current_course.click_num += 1
+                current_course.save()
                 relate_course = CourseInfo.objects.filter(category=current_course.category).exclude(
                     id=course_id)[:2]  # <QuerySet []>
                 # 判断机构和课程是否被当前用户收藏
